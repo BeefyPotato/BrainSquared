@@ -130,7 +130,7 @@ Every agent verdict is itself an `agent_action` node in the graph — governance
 
 **Files:** `seed.json`, `fixtures/claude-conversation.txt`, `fixtures/leadership-memo.txt`.
 
-**What it is:** a fictional consulting firm, **Meridian Advisory** (teams: Strategy, Diligence, Digital) — 26 nodes, 24 edges, full content in plan Step A2.1. Two **planted demo hooks that must never be altered casually**:
+**What it is:** a fictional consulting firm, **Meridian Advisory** (teams: Strategy, Diligence, Digital) — 27 nodes, 24 edges, full content in plan Step A2.1. Two **planted demo hooks that must never be altered casually**:
 1. `pr-client-research` (seeded prompt) — the conversation fixture contains a near-duplicate, so the Curator performs a live merge during the demo.
 2. `wf-fasttrack` (seeded, approved workflow that skips senior review) — the leadership-memo fixture mandates senior review, so Run Council makes the Auditor flag it, citing the memo node. **This is the showpiece.**
 
