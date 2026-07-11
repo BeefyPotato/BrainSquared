@@ -1,7 +1,6 @@
 'use client';
-import { useState } from 'react';
 import { IconArrowUpRight, IconRefresh, IconStar } from '@/components/icons';
-import { cardHeadStyle, cardStyle, color, font, heroStyle, heroSubStyle, heroTitleStyle, primaryButtonStyle, radius, space, statusSoft, statusText } from '@/components/theme';
+import { cardHeadStyle, cardStyle, color, font, heroStyle, heroSubStyle, heroTitleStyle, radius, space, statusSoft, statusText } from '@/components/theme';
 
 // Demo-only content: this tab's data is intentionally hardcoded, not backed
 // by a real credits/gamification system. See the mock this replicates.
@@ -41,8 +40,6 @@ const CONTRIBUTIONS: { label: string; value: number; color: string }[] = [
 ];
 
 export default function ImpactPanel() {
-  const [simulated, setSimulated] = useState(0);
-
   return (
     <div style={{ fontFamily: font.family }}>
       <div style={heroStyle}>
@@ -50,12 +47,6 @@ export default function ImpactPanel() {
           <h1 style={heroTitleStyle}>Your contribution impact</h1>
           <p style={heroSubStyle}>Original creators remain visible as knowledge is reused and improved.</p>
         </div>
-        <button
-          onClick={() => setSimulated(s => s + 1)}
-          style={primaryButtonStyle(false)}
-        >
-          Simulate a reuse{simulated > 0 ? ` (${simulated})` : ''}
-        </button>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: space.xl }}>
