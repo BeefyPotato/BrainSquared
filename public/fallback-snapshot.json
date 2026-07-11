@@ -10,7 +10,7 @@
       "author": null,
       "source": null,
       "team": "Strategy",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "p-minhle",
@@ -22,7 +22,7 @@
       "author": null,
       "source": null,
       "team": "Strategy",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "p-sarahchen",
@@ -34,7 +34,7 @@
       "author": null,
       "source": null,
       "team": "Diligence",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "p-davidosei",
@@ -46,7 +46,7 @@
       "author": null,
       "source": null,
       "team": "Diligence",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "p-linhpham",
@@ -58,7 +58,7 @@
       "author": null,
       "source": null,
       "team": "Digital",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "p-priyanair",
@@ -70,7 +70,7 @@
       "author": null,
       "source": null,
       "team": "Digital",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "proj-falcon",
@@ -82,7 +82,7 @@
       "author": null,
       "source": null,
       "team": "Strategy",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "proj-harbor",
@@ -94,7 +94,7 @@
       "author": null,
       "source": null,
       "team": "Diligence",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "pr-client-research",
@@ -109,7 +109,7 @@
         "name": "prompt library"
       },
       "team": "Strategy",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "pr-proposal-draft",
@@ -124,7 +124,7 @@
         "name": "prompt library"
       },
       "team": "Strategy",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "pr-interview-synth",
@@ -139,7 +139,7 @@
         "name": "harbor-interviews chat"
       },
       "team": "Diligence",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "pr-swot-gen",
@@ -154,7 +154,7 @@
         "name": "swot-experiments"
       },
       "team": "Digital",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "wf-fasttrack",
@@ -169,7 +169,7 @@
         "name": "ops wiki"
       },
       "team": "Diligence",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "wf-dd-datapack",
@@ -184,7 +184,7 @@
         "name": "ops wiki"
       },
       "team": "Diligence",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "wf-content-qa",
@@ -199,7 +199,7 @@
         "name": "ops wiki"
       },
       "team": "Strategy",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "ac-extraction-agent",
@@ -214,7 +214,7 @@
         "name": "extraction-agent.yaml"
       },
       "team": "Diligence",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "ls-registry-hallucination",
@@ -229,7 +229,7 @@
         "name": "falcon-research chat"
       },
       "team": "Strategy",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "ls-old-market-data",
@@ -244,7 +244,7 @@
         "name": "falcon-research chat"
       },
       "team": "Strategy",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "ls-translation-tone",
@@ -259,7 +259,7 @@
         "name": "#project-falcon"
       },
       "team": "Digital",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "ls-agent-context-limit",
@@ -274,7 +274,7 @@
         "name": "#project-harbor"
       },
       "team": "Diligence",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "st-no-client-names",
@@ -289,7 +289,7 @@
         "name": "partner memo 2026-02"
       },
       "team": "Strategy",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "st-cite-sources",
@@ -304,7 +304,7 @@
         "name": "partner memo 2025-11"
       },
       "team": "Strategy",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "st-approved-data",
@@ -319,7 +319,7 @@
         "name": "DD practice guide"
       },
       "team": "Diligence",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "dc-default-model",
@@ -334,7 +334,7 @@
         "name": "partner meeting 2026-03"
       },
       "team": "Strategy",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "dc-proposal-template",
@@ -349,7 +349,7 @@
         "name": "partner meeting 2026-01"
       },
       "team": "Strategy",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "dc-ai-disclosure",
@@ -364,7 +364,7 @@
         "name": "partner meeting 2026-04"
       },
       "team": "Strategy",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     },
     {
       "id": "src-falcon-chat",
@@ -379,7 +379,7 @@
         "name": "falcon-research chat"
       },
       "team": "Strategy",
-      "created_at": "2026-07-11T20:01:47.716445+00:00"
+      "created_at": "2026-07-11T21:23:16.59568+00:00"
     }
   ],
   "edges": [
@@ -388,168 +388,168 @@
       "from_node": "pr-client-research",
       "to_node": "p-minhle",
       "type": "authored_by",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-02",
       "from_node": "pr-proposal-draft",
       "to_node": "p-minhle",
       "type": "authored_by",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-03",
       "from_node": "pr-interview-synth",
       "to_node": "p-sarahchen",
       "type": "authored_by",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-04",
       "from_node": "pr-swot-gen",
       "to_node": "p-priyanair",
       "type": "authored_by",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-05",
       "from_node": "wf-fasttrack",
       "to_node": "p-davidosei",
       "type": "authored_by",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-06",
       "from_node": "wf-dd-datapack",
       "to_node": "p-sarahchen",
       "type": "authored_by",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-07",
       "from_node": "wf-content-qa",
       "to_node": "p-antran",
       "type": "authored_by",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-08",
       "from_node": "ac-extraction-agent",
       "to_node": "p-sarahchen",
       "type": "authored_by",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-09",
       "from_node": "ls-registry-hallucination",
       "to_node": "p-minhle",
       "type": "authored_by",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-10",
       "from_node": "ls-old-market-data",
       "to_node": "p-minhle",
       "type": "authored_by",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-11",
       "from_node": "ls-translation-tone",
       "to_node": "p-linhpham",
       "type": "authored_by",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-12",
       "from_node": "ls-agent-context-limit",
       "to_node": "p-davidosei",
       "type": "authored_by",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-13",
       "from_node": "st-no-client-names",
       "to_node": "p-antran",
       "type": "authored_by",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-14",
       "from_node": "st-cite-sources",
       "to_node": "p-antran",
       "type": "authored_by",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-15",
       "from_node": "st-approved-data",
       "to_node": "p-sarahchen",
       "type": "authored_by",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-16",
       "from_node": "pr-client-research",
       "to_node": "proj-falcon",
       "type": "used_in",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-17",
       "from_node": "pr-interview-synth",
       "to_node": "proj-harbor",
       "type": "used_in",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-18",
       "from_node": "wf-dd-datapack",
       "to_node": "proj-harbor",
       "type": "used_in",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-19",
       "from_node": "ac-extraction-agent",
       "to_node": "proj-harbor",
       "type": "used_in",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-20",
       "from_node": "pr-client-research",
       "to_node": "src-falcon-chat",
       "type": "derived_from",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-21",
       "from_node": "ls-registry-hallucination",
       "to_node": "src-falcon-chat",
       "type": "derived_from",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-22",
       "from_node": "ls-old-market-data",
       "to_node": "src-falcon-chat",
       "type": "derived_from",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-23",
       "from_node": "ls-old-market-data",
       "to_node": "pr-client-research",
       "type": "supports",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     },
     {
       "id": "e-24",
       "from_node": "ls-agent-context-limit",
       "to_node": "ac-extraction-agent",
       "type": "supports",
-      "created_at": "2026-07-11T20:01:47.869235+00:00"
+      "created_at": "2026-07-11T21:23:16.87125+00:00"
     }
   ]
 }
