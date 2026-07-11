@@ -1,1 +1,13 @@
-Task A2 (Engineer A): demo fixture — full text in docs/superpowers/plans/2026-07-11-brainsquared-mvp.md (Step A2.2)
+Exported Claude conversation — Sarah Chen — 2026-07-10
+
+Sarah: I need to research target companies for the new retail DD. Help me write a reusable prompt.
+Claude: Here's a draft: "Given a company name and industry, summarize the company, list competitors, and note risks."
+Sarah: Too shallow. I want numbered outputs: overview bullets, top 3 competitors with revenue estimates, three risks, two growth levers. And force citations.
+Claude: Updated: "You are a research analyst. Given a company name and industry, produce: (1) a 5-bullet company overview, (2) the top 3 competitors with revenue estimates, (3) three key risks, (4) two growth levers. Provide a cited source for every figure."
+Sarah: Better. It kept quoting a 2019 market report though, which inflated the market size badly.
+Claude: Add a constraint: "Only cite sources published after 2024."
+Sarah: That fixed it. Also — process question. For these small retail DDs I'll run it like this: first run this research prompt per target, then compile a comparison matrix, then do a red-flag pass against the registry portal, then write the summary memo. Sound right?
+Claude: Yes — four steps: (1) run the research prompt per target company, (2) compile the comparison matrix, (3) red-flag pass verifying registrations against the national portal, (4) draft the summary memo for senior review.
+Sarah: One more thing I learned today: when I paste more than about ten filings at once, you started silently dropping the later ones. I'll batch uploads to five filings from now on.
+Claude: Good practice — smaller batches avoid silent truncation of later documents.
+Sarah: Great. Saving this whole thread so the team can reuse it.

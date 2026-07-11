@@ -1,0 +1,555 @@
+{
+  "nodes": [
+    {
+      "id": "p-antran",
+      "type": "person",
+      "label": "An Tran",
+      "content": "Managing Partner",
+      "context": "",
+      "status": "approved",
+      "author": null,
+      "source": null,
+      "team": "Strategy",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "p-minhle",
+      "type": "person",
+      "label": "Minh Le",
+      "content": "Senior Consultant",
+      "context": "",
+      "status": "approved",
+      "author": null,
+      "source": null,
+      "team": "Strategy",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "p-sarahchen",
+      "type": "person",
+      "label": "Sarah Chen",
+      "content": "Diligence Lead",
+      "context": "",
+      "status": "approved",
+      "author": null,
+      "source": null,
+      "team": "Diligence",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "p-davidosei",
+      "type": "person",
+      "label": "David Osei",
+      "content": "Consultant",
+      "context": "",
+      "status": "approved",
+      "author": null,
+      "source": null,
+      "team": "Diligence",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "p-linhpham",
+      "type": "person",
+      "label": "Linh Pham",
+      "content": "Digital Practice Lead",
+      "context": "",
+      "status": "approved",
+      "author": null,
+      "source": null,
+      "team": "Digital",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "p-priyanair",
+      "type": "person",
+      "label": "Priya Nair",
+      "content": "Analyst",
+      "context": "",
+      "status": "approved",
+      "author": null,
+      "source": null,
+      "team": "Digital",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "proj-falcon",
+      "type": "project",
+      "label": "Project Falcon — retail market entry (VN)",
+      "content": "Market-entry study for a regional retail client entering Vietnam.",
+      "context": "",
+      "status": "approved",
+      "author": null,
+      "source": null,
+      "team": "Strategy",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "proj-harbor",
+      "type": "project",
+      "label": "Project Harbor — fintech due diligence",
+      "content": "Buy-side DD on a SEA payments startup.",
+      "context": "",
+      "status": "approved",
+      "author": null,
+      "source": null,
+      "team": "Diligence",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "pr-client-research",
+      "type": "prompt",
+      "label": "Client research brief prompt",
+      "content": "You are a strategy analyst. Given a company name and industry, produce: (1) 5-bullet company overview, (2) top 3 competitors with revenue estimates, (3) three risks, (4) two growth levers. Cite a source for every number. Only use sources published after 2024.",
+      "context": "Minh's team iterated 6 times; the post-2024 source constraint fixed stale-market-size errors. Works best with GPT-4.1.",
+      "status": "approved",
+      "author": "Minh Le",
+      "source": {
+        "kind": "manual",
+        "name": "prompt library"
+      },
+      "team": "Strategy",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "pr-proposal-draft",
+      "type": "prompt",
+      "label": "Proposal first-draft prompt",
+      "content": "Draft a consulting proposal using template v3: situation, approach, workplan (3 phases), team, fees placeholder. Tone: direct, no superlatives. Input: discovery-call notes.",
+      "context": "Cuts proposal drafting from 4h to 40min. Requires discovery notes as input or it invents scope.",
+      "status": "approved",
+      "author": "Minh Le",
+      "source": {
+        "kind": "manual",
+        "name": "prompt library"
+      },
+      "team": "Strategy",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "pr-interview-synth",
+      "type": "prompt",
+      "label": "Expert interview synthesis prompt",
+      "content": "Given a raw interview transcript, extract: key claims (with confidence), contradictions with prior interviews, follow-up questions. Output as a table.",
+      "context": "Built on Project Harbor; catches contradictions humans miss across 10+ interviews.",
+      "status": "approved",
+      "author": "Sarah Chen",
+      "source": {
+        "kind": "claude_conversation",
+        "name": "harbor-interviews chat"
+      },
+      "team": "Diligence",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "pr-swot-gen",
+      "type": "prompt",
+      "label": "Rapid SWOT generator",
+      "content": "Generate a SWOT for {company} grounded ONLY in the attached research pack. Flag any cell where evidence is weak.",
+      "context": "The 'grounded only' clause stops hallucinated strengths. Weak-evidence flags drive follow-up research.",
+      "status": "approved",
+      "author": "Priya Nair",
+      "source": {
+        "kind": "chatgpt_export",
+        "name": "swot-experiments"
+      },
+      "team": "Digital",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "wf-fasttrack",
+      "type": "workflow",
+      "label": "Fast-track deliverable workflow",
+      "content": "For deliverables under $10k: (1) draft with AI using approved prompts, (2) author self-review against checklist, (3) send directly to client same day. Senior review skipped to hit turnaround targets.",
+      "context": "Introduced to win small engagements on speed. Saves ~1 day per deliverable.",
+      "status": "approved",
+      "author": "David Osei",
+      "source": {
+        "kind": "manual",
+        "name": "ops wiki"
+      },
+      "team": "Diligence",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "wf-dd-datapack",
+      "type": "workflow",
+      "label": "DD data-pack assembly workflow",
+      "content": "(1) Pull registry filings, (2) run financials through the extraction agent, (3) cross-check revenue vs bank statements, (4) log anomalies in the red-flag sheet.",
+      "context": "Step 3 added after Project Harbor found a 20% revenue overstatement.",
+      "status": "approved",
+      "author": "Sarah Chen",
+      "source": {
+        "kind": "manual",
+        "name": "ops wiki"
+      },
+      "team": "Diligence",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "wf-content-qa",
+      "type": "workflow",
+      "label": "Client deliverable QA workflow",
+      "content": "(1) AI draft, (2) fact-check pass with citations verified, (3) senior consultant review, (4) partner sign-off for >$50k engagements.",
+      "context": "The baseline QA path for standard deliverables.",
+      "status": "approved",
+      "author": "An Tran",
+      "source": {
+        "kind": "manual",
+        "name": "ops wiki"
+      },
+      "team": "Strategy",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "ac-extraction-agent",
+      "type": "agent_config",
+      "label": "Financials extraction agent config",
+      "content": "Model: gpt-4.1. System: extract P&L lines from uploaded statements into the standard schema; refuse to guess missing values; output JSON. Temperature 0.",
+      "context": "Refuse-to-guess instruction added after it fabricated a depreciation line on Harbor.",
+      "status": "approved",
+      "author": "Sarah Chen",
+      "source": {
+        "kind": "config_file",
+        "name": "extraction-agent.yaml"
+      },
+      "team": "Diligence",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "ls-registry-hallucination",
+      "type": "lesson",
+      "label": "Models hallucinate VN registry numbers",
+      "content": "GPT and Claude both invent plausible-looking Vietnamese company registration numbers. Always verify against the National Business Registration Portal.",
+      "context": "Cost us a rework cycle on Falcon when a cited registration number didn't exist.",
+      "status": "approved",
+      "author": "Minh Le",
+      "source": {
+        "kind": "claude_conversation",
+        "name": "falcon-research chat"
+      },
+      "team": "Strategy",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "ls-old-market-data",
+      "type": "lesson",
+      "label": "Constrain market sizing to post-2024 sources",
+      "content": "Unconstrained prompts pull pre-COVID market reports and overstate growth. Add an explicit source-date constraint.",
+      "context": "Root cause of the stale numbers in early Falcon drafts; fixed by the constraint now baked into pr-client-research.",
+      "status": "approved",
+      "author": "Minh Le",
+      "source": {
+        "kind": "claude_conversation",
+        "name": "falcon-research chat"
+      },
+      "team": "Strategy",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "ls-translation-tone",
+      "type": "lesson",
+      "label": "VN→EN translation flattens tone",
+      "content": "Machine translation of client interviews loses hedging and politeness cues that matter for reading commitment levels. Have a bilingual reviewer spot-check key quotes.",
+      "context": "Misread a lukewarm partner as enthusiastic on Falcon; caught in review.",
+      "status": "approved",
+      "author": "Linh Pham",
+      "source": {
+        "kind": "slack_thread",
+        "name": "#project-falcon"
+      },
+      "team": "Digital",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "ls-agent-context-limit",
+      "type": "lesson",
+      "label": "Extraction agent fails silently past ~50 pages",
+      "content": "Beyond ~50 pages the extraction agent starts skipping statements without warning. Chunk uploads to 30 pages.",
+      "context": "Found during Harbor when Q3 statements vanished from output.",
+      "status": "approved",
+      "author": "David Osei",
+      "source": {
+        "kind": "slack_thread",
+        "name": "#project-harbor"
+      },
+      "team": "Diligence",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "st-no-client-names",
+      "type": "standard",
+      "label": "No real client names in stored prompts",
+      "content": "Prompts saved to the firm library must use placeholders ({company}, {client}) — never real client names or confidential figures.",
+      "context": "Confidentiality obligation under our MSAs.",
+      "status": "approved",
+      "author": "An Tran",
+      "source": {
+        "kind": "manual",
+        "name": "partner memo 2026-02"
+      },
+      "team": "Strategy",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "st-cite-sources",
+      "type": "standard",
+      "label": "Every client-facing number needs a cited source",
+      "content": "Any figure in a client deliverable must carry a verifiable citation. AI-generated numbers without sources are treated as unverified.",
+      "context": "Adopted after two near-miss factual errors in 2025.",
+      "status": "approved",
+      "author": "An Tran",
+      "source": {
+        "kind": "manual",
+        "name": "partner memo 2025-11"
+      },
+      "team": "Strategy",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "st-approved-data",
+      "type": "standard",
+      "label": "DD uses approved data sources only",
+      "content": "Due-diligence work may only rely on the approved source list (registry portals, audited statements, licensed databases).",
+      "context": "Regulatory defensibility of DD conclusions.",
+      "status": "approved",
+      "author": "Sarah Chen",
+      "source": {
+        "kind": "manual",
+        "name": "DD practice guide"
+      },
+      "team": "Diligence",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "dc-default-model",
+      "type": "decision",
+      "label": "GPT-4.1 is the firm default drafting model",
+      "content": "Standardized on GPT-4.1 for drafting (March 2026) after bake-off vs three alternatives on proposal quality.",
+      "context": "Consistency of outputs across teams; revisit quarterly.",
+      "status": "approved",
+      "author": "An Tran",
+      "source": {
+        "kind": "manual",
+        "name": "partner meeting 2026-03"
+      },
+      "team": "Strategy",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "dc-proposal-template",
+      "type": "decision",
+      "label": "Proposal template v3 is mandatory",
+      "content": "All proposals use template v3 structure. Older templates retired.",
+      "context": "Clients compared inconsistent proposals from two teams in 2025 — embarrassing.",
+      "status": "approved",
+      "author": "An Tran",
+      "source": {
+        "kind": "manual",
+        "name": "partner meeting 2026-01"
+      },
+      "team": "Strategy",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "dc-ai-disclosure",
+      "type": "decision",
+      "label": "AI use disclosed in engagement letters",
+      "content": "Engagement letters state that AI tools assist drafting and analysis under human review.",
+      "context": "Client trust and legal advice both pointed the same way.",
+      "status": "approved",
+      "author": "An Tran",
+      "source": {
+        "kind": "manual",
+        "name": "partner meeting 2026-04"
+      },
+      "team": "Strategy",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    },
+    {
+      "id": "src-falcon-chat",
+      "type": "source",
+      "label": "falcon-research chat (Claude, 2026-06-30)",
+      "content": "Archived Claude conversation in which Minh iterated the client research prompt and hit the registry-number hallucination.",
+      "context": "",
+      "status": "approved",
+      "author": "Minh Le",
+      "source": {
+        "kind": "claude_conversation",
+        "name": "falcon-research chat"
+      },
+      "team": "Strategy",
+      "created_at": "2026-07-11T20:01:47.716445+00:00"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-01",
+      "from_node": "pr-client-research",
+      "to_node": "p-minhle",
+      "type": "authored_by",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-02",
+      "from_node": "pr-proposal-draft",
+      "to_node": "p-minhle",
+      "type": "authored_by",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-03",
+      "from_node": "pr-interview-synth",
+      "to_node": "p-sarahchen",
+      "type": "authored_by",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-04",
+      "from_node": "pr-swot-gen",
+      "to_node": "p-priyanair",
+      "type": "authored_by",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-05",
+      "from_node": "wf-fasttrack",
+      "to_node": "p-davidosei",
+      "type": "authored_by",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-06",
+      "from_node": "wf-dd-datapack",
+      "to_node": "p-sarahchen",
+      "type": "authored_by",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-07",
+      "from_node": "wf-content-qa",
+      "to_node": "p-antran",
+      "type": "authored_by",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-08",
+      "from_node": "ac-extraction-agent",
+      "to_node": "p-sarahchen",
+      "type": "authored_by",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-09",
+      "from_node": "ls-registry-hallucination",
+      "to_node": "p-minhle",
+      "type": "authored_by",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-10",
+      "from_node": "ls-old-market-data",
+      "to_node": "p-minhle",
+      "type": "authored_by",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-11",
+      "from_node": "ls-translation-tone",
+      "to_node": "p-linhpham",
+      "type": "authored_by",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-12",
+      "from_node": "ls-agent-context-limit",
+      "to_node": "p-davidosei",
+      "type": "authored_by",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-13",
+      "from_node": "st-no-client-names",
+      "to_node": "p-antran",
+      "type": "authored_by",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-14",
+      "from_node": "st-cite-sources",
+      "to_node": "p-antran",
+      "type": "authored_by",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-15",
+      "from_node": "st-approved-data",
+      "to_node": "p-sarahchen",
+      "type": "authored_by",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-16",
+      "from_node": "pr-client-research",
+      "to_node": "proj-falcon",
+      "type": "used_in",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-17",
+      "from_node": "pr-interview-synth",
+      "to_node": "proj-harbor",
+      "type": "used_in",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-18",
+      "from_node": "wf-dd-datapack",
+      "to_node": "proj-harbor",
+      "type": "used_in",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-19",
+      "from_node": "ac-extraction-agent",
+      "to_node": "proj-harbor",
+      "type": "used_in",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-20",
+      "from_node": "pr-client-research",
+      "to_node": "src-falcon-chat",
+      "type": "derived_from",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-21",
+      "from_node": "ls-registry-hallucination",
+      "to_node": "src-falcon-chat",
+      "type": "derived_from",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-22",
+      "from_node": "ls-old-market-data",
+      "to_node": "src-falcon-chat",
+      "type": "derived_from",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-23",
+      "from_node": "ls-old-market-data",
+      "to_node": "pr-client-research",
+      "type": "supports",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    },
+    {
+      "id": "e-24",
+      "from_node": "ls-agent-context-limit",
+      "to_node": "ac-extraction-agent",
+      "type": "supports",
+      "created_at": "2026-07-11T20:01:47.869235+00:00"
+    }
+  ]
+}
