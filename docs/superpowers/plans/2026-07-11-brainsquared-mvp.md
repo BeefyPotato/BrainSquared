@@ -28,10 +28,11 @@
 | T+1:30–3:00 | A2 seed + fixtures done (**S1**) → A3 analytics | B2 Scribe + ingest (**S2**) | C2 GraphView → C3 drawer |
 | T+3:00–5:00 | A4 smoke + snapshot | B3 Curator → B4 Auditor + council (**S3**) | C4 Capture → C5 Council Log |
 | T+5:00–6:30 | Integration support | B5 recommender → B6 edit API | C6 Task + Analytics panels (**S4**) |
-| T+6:30–8:00 | **All: C7 Library/edit if on time, then polish, seed tuning, 2 timed pitch rehearsals (S5)** | | |
+| T+6:30–8:00 | **All: B7 MCP + C7 Library/edit if on time, then polish, seed tuning, 2 timed pitch rehearsals (S5)** | | |
 
 **Sync points:** S1 seeded graph renders · S2 paste→nodes bloom E2E · S3 memo-reversal moment works · S4 all tabs live · S5 rehearsed.
-**Cut lines if late (spec §8):** C6 Analytics → B6+C7 Library/edit. Never cut: pipeline core, memo moment, Start a task.
+**Cut lines if late (spec §8):** C6 Analytics → B7 MCP (degrades to roadmap slide + the demo's paste-capture still shows the same value) → B6+C7 Library/edit. Never cut: pipeline core, memo moment, Start a task.
+**Honest budget note:** base tasks ≈7.5h; B6/B7/C7 add ≈2h more. They fit only because they sit in different engineers' late-night lanes — if any core task slips, apply the cut line immediately instead of compressing rehearsals.
 
 ## Interface contracts (all tracks code against these; defined in Task 0)
 
@@ -1011,6 +1012,91 @@ curl.exe -X POST http://localhost:3000/api/edit -H "Content-Type: application/js
 Expected: `ok:true` with one createdNodeId; in Supabase, `wf-content-qa` is `superseded`, the new node exists, and the Auditor log flags the new version (it drops senior review, contradicting `wf` standards/decisions — reasoning should cite one). `npm run seed` to restore.
 
 - [ ] **Step B6.3: Commit** — `git add -A; git pull --rebase; git commit -m "feat: versioned edit API with auditor re-review"; git push`
+
+## Task B7: MCP capture server (stretch — build after B6; first cut if the night runs long)
+
+**Files:** Create: `mcp/server.ts`; Modify: `package.json` (add script + deps)
+**Interfaces:** Consumes the existing `POST /api/ingest` — no new contracts. Produces an MCP stdio server exposing one tool, `save_to_org_memory`, so Claude Desktop/Claude Code can push conversation knowledge straight into the Org KG. Requires the dev server running on localhost:3000.
+
+- [ ] **Step B7.1: Install deps and add script**
+
+```powershell
+npm i @modelcontextprotocol/sdk zod
+```
+
+Add to `package.json` scripts: `"mcp": "tsx mcp/server.ts"`
+
+- [ ] **Step B7.2: Write `mcp/server.ts`**
+
+```ts
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { z } from 'zod';
+
+const BASE_URL = process.env.BRAINSQUARED_URL ?? 'http://localhost:3000';
+
+const server = new McpServer({ name: 'brainsquared', version: '0.1.0' });
+
+server.registerTool(
+  'save_to_org_memory',
+  {
+    description:
+      'Save valuable AI knowledge from this conversation (refined prompts, workflows, agent configs, lessons learned, decisions) into the organization\'s shared memory graph, where the Agent Council will review and organize it. Use when the user asks to save, remember, or share what was learned.',
+    inputSchema: {
+      conversation_text: z
+        .string()
+        .describe('The relevant conversation content or knowledge worth preserving, verbatim'),
+      uploader: z.string().describe('The name of the person saving this knowledge'),
+    },
+  },
+  async ({ conversation_text, uploader }) => {
+    const res = await fetch(`${BASE_URL}/api/ingest`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: conversation_text,
+        uploader,
+        sourceKind: 'claude_conversation',
+        sourceName: `MCP capture by ${uploader}`,
+      }),
+    });
+    const json = await res.json();
+    return {
+      content: [{
+        type: 'text' as const,
+        text: json.ok
+          ? `Saved ${json.createdNodeIds.length} knowledge assets to org memory. The Agent Council (Scribe, Curator, Auditor) is reviewing them now — watch them appear on the graph.`
+          : `Could not save to org memory: ${json.error}`,
+      }],
+    };
+  }
+);
+
+const transport = new StdioServerTransport();
+await server.connect(transport);
+console.error('BrainSquared MCP server running (stdio)');
+```
+
+(If `registerTool` doesn't exist in the installed SDK version, use the older `server.tool(name, description, schemaObject, handler)` form with the same arguments.)
+
+- [ ] **Step B7.3: Connect Claude Desktop (HUMAN step — see MANUAL_STEPS.md Part 4B).** Config entry for `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "brainsquared": {
+      "command": "npx",
+      "args": ["tsx", "C:\\FULL\\PATH\\TO\\BrainSquared\\mcp\\server.ts"]
+    }
+  }
+}
+```
+
+(Claude Code alternative, no Desktop needed: `claude mcp add brainsquared -- npx tsx C:\FULL\PATH\TO\BrainSquared\mcp\server.ts`)
+
+- [ ] **Step B7.4: Verify end-to-end** — with `npm run dev` running and the graph on screen: in Claude Desktop/Code, have a short conversation ("help me improve this prompt…"), then say *"save what we learned to org memory — I'm Sarah Chen."* Claude calls the tool → yellow nodes bloom on the graph → council reviews. **Record a 20-second screen capture of this working** — it's the stage backup if live MCP misbehaves. `npm run seed` after.
+
+- [ ] **Step B7.5: Commit** — `git add -A; git pull --rebase; git commit -m "feat: MCP capture server"; git push`
 
 ---
 

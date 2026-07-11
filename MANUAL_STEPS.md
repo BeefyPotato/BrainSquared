@@ -108,12 +108,13 @@ Your manual jobs:
 - [ ] After Task B2, announce: **"S2 — /api/ingest is live"**.
 - [ ] After Task B4, personally run the **memo moment** check (plan Step B4.3) and announce: **"S3 — memo moment works"**. This is the demo's showpiece — a human must see it work tonight, not just trust the AI's word.
 - [ ] If an agent behaves weirdly during rehearsal (bad merges, wrong flags), the fix is editing the prompt text in `src/lib/agents/prompts.ts` — small wording changes, test again. Don't let the AI restructure code to fix a prompt problem.
+- [ ] **If you build Task B7 (MCP capture):** connecting it to Claude Desktop is a human job — edit Claude Desktop's config file (Settings → Developer → Edit Config) and add the `brainsquared` entry from plan Step B7.3 with the FULL path to `mcp\server.ts` on your machine, then fully restart Claude Desktop. Test it by chatting, then saying "save what we learned to org memory — I'm Sarah Chen." **Record a 20-second screen video of it working** — that's the stage backup.
 
 Prompt for your AI:
 
 > Read AGENTS.md, then open docs/superpowers/plans/2026-07-11-brainsquared-mvp.md and implement Task B1 exactly as written. I am Engineer B — only touch Track B files. Use the exact prompts from the plan's prompts.ts code block. When `npx tsc --noEmit` passes, commit with the plan's message and stop so I can review.
 
-Then repeat for B2, B3, B4, B5, and B6 (the edit feature — only if the night is on schedule). For B2–B4 and B6, run the curl verification yourself with `npm run dev` running, and reseed after (`npm run seed`).
+Then repeat for B2, B3, B4, B5, B6 (edit feature), and B7 (MCP capture) — B6 and B7 only if the night is on schedule. For B2–B4 and B6, run the curl verification yourself with `npm run dev` running, and reseed after (`npm run seed`).
 
 ### Engineer C — Frontend (Tasks C1 → C2 → C3 → C4 → C5 → C6)
 
@@ -159,7 +160,7 @@ The five rules:
 1. **Everyone together (30 min):** Part 2 keys + Part 3 setup. Don't split before this works on all three laptops.
 2. **Split into tracks.** Work your tasks in order. One task at a time: AI implements → you verify → commit → push → next task.
 3. **Watch for the four announcements:** S1 (data), S2 (ingest live), S3 (memo moment works), S4 (all tabs live). They're the handoff points — if you're blocked waiting for one, help the person producing it instead of starting something new.
-4. **Running late?** Cut in this order (already decided, don't debate at 3 AM): Analytics tab → Library/edit feature (B6+C7). **Never cut** the agents pipeline, the memo moment, or Start a task — they're the pitch.
+4. **Running late?** Cut in this order (already decided, don't debate at 3 AM): Analytics tab → MCP capture (B7 — the pitch falls back to the roadmap slide) → Library/edit feature (B6+C7). **Never cut** the agents pipeline, the memo moment, or Start a task — they're the pitch.
 5. **Last 90 minutes — all together again:** `npm run seed` → `npm run smoke` (must print SMOKE PASS) → `npm run snapshot` → commit. Then run the full 5-minute demo **twice**, timed, following the script in the spec (§7). Reseed between runs. Fix only what breaks the demo; resist polishing.
 6. **Before you sleep:** push everything, and have `data/fixtures/claude-conversation.txt` and `data/fixtures/leadership-memo.txt` open in Notepad tabs on the demo laptop, ready to paste on stage.
 

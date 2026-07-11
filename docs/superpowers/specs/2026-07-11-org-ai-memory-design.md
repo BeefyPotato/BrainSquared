@@ -118,7 +118,7 @@ Demo fixtures shipped in repo: one messy-but-realistic Claude conversation expor
 3. **1:45–2:45 The Council governs.** Curator merges the planted duplicate (gray-out animates). Auditor approves two, flags one, citing the standard violated. Click the log entry → the graph lights up the reasoning chain.
 4. **2:45–3:30 The memo moment (showpiece).** Upload the leadership memo ("all AI client deliverables require senior review — after the Menlo incident") → `standard` node lands → **Run Council** → Auditor reverses an earlier approval, red edge pointing at the memo node. *"Leadership wrote a memo — the agents learned it."*
 5. **3:30–4:15 Reuse + analytics.** "Start a task": "market-entry study for a retail client" → best assets with provenance. Flip to Analytics. *"Individual learning is now permanent organizational capability."*
-6. **4:15–5:00 Vision.** Roadmap: MCP auto-capture from Claude/ChatGPT (zero-touch exhaust), role-aware access, enterprise SSO.
+6. **4:15–5:00 Vision.** If the stretch MCP server was built: show it (live or the 20-second backup clip) — "the employee never leaves their AI tool; the knowledge saves itself." Then roadmap: auto-capture across all AI clients, role-aware access, enterprise SSO.
 
 ## 8. Build order and cut lines
 
@@ -134,7 +134,9 @@ Risk-first; each step leaves a demoable app:
 
 **Cut lines, in order, if time runs out:** pgvector stretch → Analytics tab (present numbers verbally) → Library tab + edit mode. **Never cut:** Scribe→Curator→Auditor core, the memo moment, and Start a task (the reuse payoff).
 
-**Stretch (only if ahead of schedule):** pgvector embedding column on `nodes`; "Start a task" becomes vector similarity + LLM rerank.
+**Stretch (only if ahead of schedule):**
+- **MCP capture server** — a minimal MCP stdio server exposing a `save_to_org_memory` tool that POSTs to the existing `/api/ingest`, so an employee using Claude Desktop/Code can say "save what we learned" and watch the knowledge land in the graph. This is capture-at-the-source — the real product answer to "knowledge is created while employees use AI tools." Demo live only after rehearsal; always keep a pre-recorded 20-second backup clip.
+- pgvector embedding column on `nodes`; "Start a task" becomes vector similarity + LLM rerank.
 
 ## 9. Testing
 
@@ -142,7 +144,7 @@ Demo-grade: one smoke script (`npm run smoke`) that runs seed → ingests a fixt
 
 ## 10. Out of scope (roadmap-only, stated in pitch)
 
-- MCP server auto-capturing conversations from Claude/ChatGPT clients
+- Full MCP auto-capture across all AI clients (the stretch MCP server covers manual save-to-memory from Claude only; ChatGPT/other clients and automatic background capture remain roadmap)
 - The separate higher-ups knowledge graph (HU KG) — cut during design; standards live in the single Org KG instead
 - Role-aware access control, auth, SSO
 - PDF/docx parsing; format-specific importers
