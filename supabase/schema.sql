@@ -1,0 +1,1 @@
+-- Task 0 (ALL): schema — full SQL in docs/superpowers/plans/2026-07-11-brainsquared-mvp.md (Step 0.3)

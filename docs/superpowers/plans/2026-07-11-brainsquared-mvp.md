@@ -51,13 +51,22 @@ All shared types in `src/lib/types.ts` (full code in Task 0).
 **Files:**
 - Create: whole Next.js scaffold, `src/lib/types.ts`, `supabase/schema.sql`, `.env.local`, `data/` and `scripts/` dirs
 
-- [ ] **Step 0.1: Scaffold and install** (run in repo root; say Yes to overwrite prompts — repo already has `docs/`)
+- [ ] **Step 0.1: Scaffold and install.** The repo already contains the folder skeleton (placeholder files pointing at their plan tasks), and `create-next-app` refuses non-empty directories — so scaffold in a sibling temp folder and copy the generated base files in, keeping the skeleton:
 
 ```powershell
-npx create-next-app@latest . --ts --app --src-dir --eslint --no-tailwind --import-alias "@/*"
+# from the repo root's PARENT directory:
+npx create-next-app@latest bs-temp --ts --app --src-dir --eslint --no-tailwind --import-alias "@/*"
+# copy generated config + app shell into the repo (adjust repo folder name if different):
+Copy-Item bs-temp/package.json, bs-temp/package-lock.json, bs-temp/tsconfig.json, bs-temp/next.config.ts, bs-temp/next-env.d.ts, bs-temp/eslint.config.mjs, bs-temp/.gitignore GoofyGoobers/
+Copy-Item bs-temp/src/app/layout.tsx, bs-temp/src/app/globals.css GoofyGoobers/src/app/
+Remove-Item -Recurse -Force bs-temp
+# then from the repo root:
+npm i
 npm i @supabase/supabase-js openai react-force-graph-2d dotenv
 npm i -D tsx
 ```
+
+(`src/app/page.tsx` placeholder stays — Task C1 replaces it. Delete `src/app/favicon.ico` copying if it complains; it's optional.)
 
 - [ ] **Step 0.2: Add scripts to `package.json`** (inside `"scripts"`)
 
