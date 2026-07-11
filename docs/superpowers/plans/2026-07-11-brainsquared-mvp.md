@@ -78,7 +78,7 @@ npm i -D tsx
 "snapshot": "tsx scripts/snapshot.ts"
 ```
 
-- [ ] **Step 0.3: Create Supabase project** (dashboard: new project, region Singapore) and run this in its SQL editor. Create: `supabase/schema.sql` with the same content.
+- [x] **Step 0.3: Create Supabase project** (dashboard: new project, region Singapore) and run this in its SQL editor. Create: `supabase/schema.sql` with the same content.
 
 ```sql
 create table if not exists nodes (
@@ -108,7 +108,7 @@ alter publication supabase_realtime add table edges;
 
 (Deviation from spec §3: `id` is `text`, not `uuid` — lets seed data and demo fixtures use stable human-readable IDs like `wf-fasttrack`. Nothing else changes.)
 
-- [ ] **Step 0.4: Create `.env.local`** (values from Supabase dashboard → Settings → API, and your OpenAI key). Add `.env.local` to `.gitignore` (create-next-app already ignores `.env*`— verify).
+- [x] **Step 0.4: Create `.env.local`** (values from Supabase dashboard → Settings → API, and your OpenAI key). Add `.env.local` to `.gitignore` (create-next-app already ignores `.env*`— verify).
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://YOURPROJECT.supabase.co
