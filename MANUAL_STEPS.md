@@ -113,7 +113,7 @@ Prompt for your AI:
 
 > Read AGENTS.md, then open docs/superpowers/plans/2026-07-11-brainsquared-mvp.md and implement Task B1 exactly as written. I am Engineer B — only touch Track B files. Use the exact prompts from the plan's prompts.ts code block. When `npx tsc --noEmit` passes, commit with the plan's message and stop so I can review.
 
-Then repeat for B2, B3, B4, B5. For B2–B4, run the curl verification yourself with `npm run dev` running, and reseed after (`npm run seed`).
+Then repeat for B2, B3, B4, B5, and B6 (the edit feature — only if the night is on schedule). For B2–B4 and B6, run the curl verification yourself with `npm run dev` running, and reseed after (`npm run seed`).
 
 ### Engineer C — Frontend (Tasks C1 → C2 → C3 → C4 → C5 → C6)
 
@@ -127,7 +127,7 @@ Prompt for your AI:
 
 > Read AGENTS.md, then open docs/superpowers/plans/2026-07-11-brainsquared-mvp.md and implement Task C1 exactly as written, including the placeholder components. I am Engineer C — only touch Track C files. Verify the app compiles and the tabs switch, commit with the plan's message, and stop so I can review.
 
-Then repeat for C2 → C6 in order.
+Then repeat for C2 → C7 in order (C7 is the Library/edit tab — only if the night is on schedule; it needs Engineer B's Task B6 first).
 
 ---
 
@@ -159,7 +159,7 @@ The five rules:
 1. **Everyone together (30 min):** Part 2 keys + Part 3 setup. Don't split before this works on all three laptops.
 2. **Split into tracks.** Work your tasks in order. One task at a time: AI implements → you verify → commit → push → next task.
 3. **Watch for the four announcements:** S1 (data), S2 (ingest live), S3 (memo moment works), S4 (all tabs live). They're the handoff points — if you're blocked waiting for one, help the person producing it instead of starting something new.
-4. **Running late?** Cut in this order (already decided, don't debate at 3 AM): Analytics tab → Start-a-task tab. **Never cut** the agents pipeline or the memo moment — they're the pitch.
+4. **Running late?** Cut in this order (already decided, don't debate at 3 AM): Analytics tab → Library/edit feature (B6+C7). **Never cut** the agents pipeline, the memo moment, or Start a task — they're the pitch.
 5. **Last 90 minutes — all together again:** `npm run seed` → `npm run smoke` (must print SMOKE PASS) → `npm run snapshot` → commit. Then run the full 5-minute demo **twice**, timed, following the script in the spec (§7). Reseed between runs. Fix only what breaks the demo; resist polishing.
 6. **Before you sleep:** push everything, and have `data/fixtures/claude-conversation.txt` and `data/fixtures/leadership-memo.txt` open in Notepad tabs on the demo laptop, ready to paste on stage.
 

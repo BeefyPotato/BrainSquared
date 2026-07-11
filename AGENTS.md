@@ -84,11 +84,11 @@ Every agent verdict is itself an `agent_action` node in the graph — governance
 
 **Build notes:** label prefixes matter — `logAction` produces labels like `curator: merge …` / `auditor: flagged …`, and `/api/analytics` counts them by prefix. Don't change label formats.
 
-### `src/app/api/` — HTTP surface (plan Tasks B2, B4, B5, A3)
+### `src/app/api/` — HTTP surface (plan Tasks B2, B4, B5, B6, A3)
 
-**Files:** `ingest/route.ts` (B2), `council/route.ts` (B4), `task/route.ts` (B5), `analytics/route.ts` (A3).
+**Files:** `ingest/route.ts` (B2), `council/route.ts` (B4), `task/route.ts` (B5), `edit/route.ts` (B6), `analytics/route.ts` (A3).
 
-**What it is:** four thin routes. `ingest` validates input and calls `runIngestPipeline`; `council` calls `runCouncilReview`; `task` runs the recommender prompt over approved assets and returns `{ok, answer, nodeIds}`; `analytics` computes `AnalyticsSummary` from `getGraph()` (asset counts by type/team, merge/flag counts from `agent_action` labels, coverage gaps).
+**What it is:** five thin routes. `ingest` validates input and calls `runIngestPipeline`; `council` calls `runCouncilReview`; `task` runs the recommender prompt over approved assets and returns `{ok, answer, nodeIds}`; `edit` performs a **versioned edit** (creates a new `pending` node with the edited content, marks the old one `superseded` with a `superseded_by` edge, then runs the Auditor on the new version — human edits go through the same governance as captured knowledge); `analytics` computes `AnalyticsSummary` from `getGraph()` (asset counts by type/team, merge/flag counts from `agent_action` labels, coverage gaps).
 
 **Contribution to the flow:** the only bridge between UI and agents/data. Contracts are frozen in `types.ts` and the plan's "Interface contracts" section — the frontend was built against them, so don't rename fields.
 
@@ -102,17 +102,18 @@ Every agent verdict is itself an `agent_action` node in the graph — governance
 
 **Contribution to the flow:** the Realtime→refetch loop here is what makes agent activity *visible live on the projector* — nodes bloom yellow and flip green/red with no refresh. Children are pure props-consumers; no state libraries.
 
-### `src/components/` — UI panels (plan Tasks C2–C6)
+### `src/components/` — UI panels (plan Tasks C2–C7)
 
-**Files:** `GraphView.tsx` (C2), `NodeDrawer.tsx` (C3), `CapturePanel.tsx` (C4), `CouncilLog.tsx` (C5), `TaskPanel.tsx` + `AnalyticsPanel.tsx` (C6).
+**Files:** `GraphView.tsx` (C2), `NodeDrawer.tsx` (C3, edit mode added in C7), `CapturePanel.tsx` (C4), `CouncilLog.tsx` (C5), `TaskPanel.tsx` + `AnalyticsPanel.tsx` (C6), `LibraryPanel.tsx` (C7).
 
 **What each does and why it matters to the demo:**
 - `GraphView` — `react-force-graph-2d` (dynamic import, `ssr: false`), status colors + type colors (person blue, project cyan, source purple, agent_action magenta); when `highlightIds` is non-empty, everything else dims. This is the centerpiece on screen for all five demo beats.
-- `NodeDrawer` — click a node → content, **why-context**, author/source, and clickable provenance edges (jump to related nodes). This demos "context capture" and traceability.
+- `NodeDrawer` — click a node → content, **why-context**, author/source, and clickable provenance edges (jump to related nodes). This demos "context capture" and traceability. C7 adds an Edit mode: saving calls `/api/edit`, then jumps the drawer to the new version so the user watches the Auditor judge their edit live.
+- `LibraryPanel` — browsable list of live assets with type-filter chips (Workflows/Prompts/Lessons/…); clicking opens the drawer. The simple "see and edit workflows" entry point.
 - `CapturePanel` — paste/upload exhaust → `POST /api/ingest`. Demo beat 2.
 - `CouncilLog` — renders `agent_action` nodes from the graph (no separate store), newest first, with agent avatars 📝🧹🕵️; clicking highlights involved nodes; hosts the **Run Council** button (`POST /api/council`). Demo beats 3–4.
 - `TaskPanel` — `POST /api/task`, renders recommendations with "trace in graph" buttons. Demo beat 5 (reuse).
-- `AnalyticsPanel` — `GET /api/analytics`, stat cards + CSS bars + gap warnings. Demo beat 5 (analytics). First cut if time runs out.
+- `AnalyticsPanel` — `GET /api/analytics`, stat cards + CSS bars + gap warnings. Demo beat 5 (analytics). First cut if time runs out; Library/edit (B6+C7) is the second cut. Start a task is never cut.
 
 **Build notes:** inline styles only, dark palette (`#0b1220` bg). Components receive `graph`/`onHighlight`/`onDone` as props from `page.tsx` — keep them stateless beyond local form state.
 

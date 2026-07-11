@@ -95,7 +95,10 @@ One page, dark theme, two zones:
   1. **Capture** — paste box + file drop (`.txt`/`.md`/`.json`) + uploader-name field → runs the pipeline.
   2. **Council Log** — agent feed, newest first: agent avatar (📝/🧹/🕵️), action, one-line reasoning; entries clickable → highlight involved nodes in the graph. Contains the **Run Council** button.
   3. **Start a task** — one input ("what are you about to do?") → 2–4 recommended approved assets with content, why-context, and a "trace" button that lights up the provenance path. Implementation: LLM over the compact node index picks relevant IDs and composes a short answer.
-  4. **Analytics** — four stat cards + two bar charts, computed from graph queries: assets by type/team (growing), Curator merges with examples (duplicated), Auditor flags by standard (governed), teams/asset-types with zero coverage (missing).
+  4. **Library** — a browsable list of live assets, filterable by type (workflows, prompts, lessons…); clicking opens the node drawer.
+  5. **Analytics** — four stat cards + two bar charts, computed from graph queries: assets by type/team (growing), Curator merges with examples (duplicated), Auditor flags by standard (governed), teams/asset-types with zero coverage (missing).
+
+**Editing (versioned and governed):** the node drawer has an Edit mode for any live asset. Saving never overwrites: it creates a new node (status `pending`) with the edited content/context, marks the old node `superseded` with a `superseded_by` edge (old versions stay viewable), and immediately runs the Auditor on the new version. Human edits go through the same governance as captured knowledge.
 
 ## 6. Seed dataset
 
@@ -129,7 +132,7 @@ Risk-first; each step leaves a demoable app:
 6. Analytics (~45 min)
 7. Polish, seed tuning, **two full pitch rehearsals** (remainder)
 
-**Cut lines, in order, if time runs out:** pgvector stretch → Analytics tab (present numbers verbally) → Start a task (fold reuse into node drawer). **Never cut:** Scribe→Curator→Auditor core and the memo moment.
+**Cut lines, in order, if time runs out:** pgvector stretch → Analytics tab (present numbers verbally) → Library tab + edit mode. **Never cut:** Scribe→Curator→Auditor core, the memo moment, and Start a task (the reuse payoff).
 
 **Stretch (only if ahead of schedule):** pgvector embedding column on `nodes`; "Start a task" becomes vector similarity + LLM rerank.
 

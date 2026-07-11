@@ -27,11 +27,11 @@
 | T+0:30–1:30 | A1 data access → A2 seed | B1 runner + prompts | C1 app shell |
 | T+1:30–3:00 | A2 seed + fixtures done (**S1**) → A3 analytics | B2 Scribe + ingest (**S2**) | C2 GraphView → C3 drawer |
 | T+3:00–5:00 | A4 smoke + snapshot | B3 Curator → B4 Auditor + council (**S3**) | C4 Capture → C5 Council Log |
-| T+5:00–6:30 | Integration support | B5 recommender | C6 Task + Analytics panels (**S4**) |
-| T+6:30–8:00 | **All: polish, seed tuning, 2 timed pitch rehearsals (S5)** | | |
+| T+5:00–6:30 | Integration support | B5 recommender → B6 edit API | C6 Task + Analytics panels (**S4**) |
+| T+6:30–8:00 | **All: C7 Library/edit if on time, then polish, seed tuning, 2 timed pitch rehearsals (S5)** | | |
 
 **Sync points:** S1 seeded graph renders · S2 paste→nodes bloom E2E · S3 memo-reversal moment works · S4 all tabs live · S5 rehearsed.
-**Cut lines if late (spec §8):** C6 Analytics → C6 Task panel. Never cut: pipeline core + memo moment.
+**Cut lines if late (spec §8):** C6 Analytics → B6+C7 Library/edit. Never cut: pipeline core, memo moment, Start a task.
 
 ## Interface contracts (all tracks code against these; defined in Task 0)
 
@@ -40,6 +40,7 @@ API routes (all JSON):
 - `POST /api/ingest` body `IngestInput` → `PipelineResult`
 - `POST /api/council` body `{}` → `PipelineResult`
 - `POST /api/task` body `{ description: string }` → `{ ok: boolean; answer: string; nodeIds: string[] }`
+- `POST /api/edit` body `{ nodeId: string; content: string; context: string; editor: string }` → `PipelineResult` (versioned edit: new pending node, old superseded, Auditor re-review)
 - `GET /api/analytics` → `AnalyticsSummary`
 
 All shared types in `src/lib/types.ts` (full code in Task 0).
@@ -942,6 +943,75 @@ export async function POST(req: Request) {
 
 - [ ] **Step B5.3: Commit** — `git add -A; git pull --rebase; git commit -m "feat: task recommender API"; git push`
 
+## Task B6: Versioned edit API
+
+**Files:** Create: `src/app/api/edit/route.ts`
+**Interfaces:** Consumes `runAuditor` (B4) + A1 data access. Produces `POST /api/edit` (C7's edit mode calls it). Editing never overwrites: new `pending` node, old node `superseded` + `superseded_by` edge, Auditor re-reviews the new version.
+
+- [ ] **Step B6.1: Write `src/app/api/edit/route.ts`**
+
+```ts
+import { NextResponse } from 'next/server';
+import { getGraph, insertNodes, insertEdges, setNodeStatus, newId } from '@/lib/supabase';
+import { runAuditor } from '@/lib/agents/auditor';
+import type { KGNode } from '@/lib/types';
+
+export const maxDuration = 60;
+
+export async function POST(req: Request) {
+  try {
+    const { nodeId, content, context, editor } = await req.json();
+    if (!nodeId || !content || !editor) {
+      return NextResponse.json({ ok: false, error: 'nodeId, content, editor required' }, { status: 400 });
+    }
+    const { nodes } = await getGraph();
+    const old = nodes.find(n => n.id === nodeId);
+    if (!old) return NextResponse.json({ ok: false, error: 'node not found' }, { status: 404 });
+    if (old.status === 'superseded') {
+      return NextResponse.json({ ok: false, error: 'cannot edit a superseded version' }, { status: 400 });
+    }
+
+    const newNodes: KGNode[] = [];
+    let person = nodes.find(
+      n => n.type === 'person' && n.label.toLowerCase() === String(editor).toLowerCase()
+    );
+    if (!person) {
+      person = {
+        id: newId('p'), type: 'person', label: editor, content: '', context: '',
+        status: 'approved', author: null, source: null, team: null,
+      };
+      newNodes.push(person);
+    }
+    const revised: KGNode = {
+      id: newId(old.type.slice(0, 2)), type: old.type, label: old.label,
+      content, context: context ?? old.context, status: 'pending',
+      author: editor, source: { kind: 'manual', name: `edit by ${editor}` }, team: person.team,
+    };
+    newNodes.push(revised);
+    await insertNodes(newNodes);
+    await insertEdges([
+      { id: newId('e'), from_node: old.id, to_node: revised.id, type: 'superseded_by' },
+      { id: newId('e'), from_node: revised.id, to_node: person.id, type: 'authored_by' },
+    ]);
+    await setNodeStatus(old.id, 'superseded');
+    const a = await runAuditor([revised.id]);
+    return NextResponse.json({ ok: true, createdNodeIds: [revised.id], log: a.log });
+  } catch (e) {
+    return NextResponse.json({ ok: false, error: String(e) }, { status: 500 });
+  }
+}
+```
+
+- [ ] **Step B6.2: Verify** — `npm run seed`, then:
+
+```powershell
+curl.exe -X POST http://localhost:3000/api/edit -H "Content-Type: application/json" -d "{\"nodeId\":\"wf-content-qa\",\"content\":\"(1) AI draft, (2) fact-check pass, (3) send directly to client to save time.\",\"context\":\"trimmed for speed\",\"editor\":\"Priya Nair\"}"
+```
+
+Expected: `ok:true` with one createdNodeId; in Supabase, `wf-content-qa` is `superseded`, the new node exists, and the Auditor log flags the new version (it drops senior review, contradicting `wf` standards/decisions — reasoning should cite one). `npm run seed` to restore.
+
+- [ ] **Step B6.3: Commit** — `git add -A; git pull --rebase; git commit -m "feat: versioned edit API with auditor re-review"; git push`
+
 ---
 
 # TRACK C — Engineer C (Frontend)
@@ -1445,6 +1515,192 @@ export default function AnalyticsPanel() {
 
 - [ ] **Step C6.4: Commit** — `git add -A; git pull --rebase; git commit -m "feat: task recommendations and analytics panels"; git push`
 
+## Task C7: Library tab + versioned edit mode (build only if on schedule — first cut after Analytics)
+
+**Files:** Create: `src/components/LibraryPanel.tsx`; Modify: `src/app/page.tsx` (add tab), `src/components/NodeDrawer.tsx` (add edit mode)
+**Interfaces:** Consumes `POST /api/edit` (B6), `graph` + `setSelectedNodeId` from C1.
+
+- [ ] **Step C7.1: Write `src/components/LibraryPanel.tsx`**
+
+```tsx
+'use client';
+import { useState } from 'react';
+import { ASSET_TYPES, type KGNode, type KGEdge, type NodeType } from '@/lib/types';
+
+const TYPE_LABELS: Record<string, string> = {
+  workflow: 'Workflows', prompt: 'Prompts', lesson: 'Lessons',
+  agent_config: 'Agent configs', decision: 'Decisions', standard: 'Standards',
+};
+
+export default function LibraryPanel({ graph, onSelect }: {
+  graph: { nodes: KGNode[]; edges: KGEdge[] };
+  onSelect: (id: string) => void;
+}) {
+  const [filter, setFilter] = useState<NodeType>('workflow');
+  const assets = graph.nodes
+    .filter(n => n.type === filter && n.status !== 'superseded')
+    .sort((a, b) => a.label.localeCompare(b.label));
+
+  return (
+    <div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 12 }}>
+        {ASSET_TYPES.map(t => (
+          <button key={t} onClick={() => setFilter(t)} style={{
+            padding: '4px 10px', borderRadius: 999, fontSize: 12, border: '1px solid #334155',
+            background: filter === t ? '#4f46e5' : 'transparent',
+            color: filter === t ? 'white' : '#94a3b8',
+          }}>{TYPE_LABELS[t] ?? t}</button>
+        ))}
+      </div>
+      {assets.length === 0 && <p style={{ fontSize: 13, color: '#64748b' }}>Nothing of this type yet.</p>}
+      {assets.map(n => (
+        <button key={n.id} onClick={() => onSelect(n.id)} style={{
+          display: 'block', width: '100%', textAlign: 'left', marginBottom: 8, padding: 10,
+          background: '#0f172a', border: '1px solid #1e293b', borderRadius: 8, color: '#e2e8f0',
+        }}>
+          <div style={{ fontSize: 13 }}><b>{n.label}</b>
+            <span style={{ marginLeft: 8, fontSize: 11, color: n.status === 'approved' ? '#22c55e' : n.status === 'flagged' ? '#ef4444' : '#eab308' }}>● {n.status}</span>
+          </div>
+          <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 4 }}>{n.content.slice(0, 100)}</div>
+          <div style={{ fontSize: 11, color: '#64748b', marginTop: 2 }}>by {n.author ?? 'unknown'}</div>
+        </button>
+      ))}
+    </div>
+  );
+}
+```
+
+- [ ] **Step C7.2: Modify `src/app/page.tsx`** — three small edits:
+  1. Add import: `import LibraryPanel from '@/components/LibraryPanel';`
+  2. Change the tabs line to: `const TABS = ['Capture', 'Council Log', 'Start a task', 'Library', 'Analytics'] as const;`
+  3. Add to the tab render block: `{tab === 'Library' && <LibraryPanel graph={graph} onSelect={setSelectedNodeId} />}`
+
+- [ ] **Step C7.3: Replace `src/components/NodeDrawer.tsx`** with this version (same as C3 plus an edit mode — editing calls `/api/edit`, then jumps the drawer to the new version):
+
+```tsx
+'use client';
+import { useEffect, useState } from 'react';
+import { ASSET_TYPES, type KGNode, type KGEdge } from '@/lib/types';
+
+const EDGE_LABELS: Record<string, string> = {
+  derived_from: 'Derived from', authored_by: 'Authored by', used_in: 'Used in',
+  supports: 'Supports', contradicts: 'Contradicts', superseded_by: 'Superseded by',
+  reviewed_by: 'Reviewed', governs: 'Cites standard',
+};
+
+export default function NodeDrawer({ graph, nodeId, onClose, onJump }: {
+  graph: { nodes: KGNode[]; edges: KGEdge[] };
+  nodeId: string;
+  onClose: () => void;
+  onJump: (id: string) => void;
+}) {
+  const node = graph.nodes.find(n => n.id === nodeId);
+  const [editing, setEditing] = useState(false);
+  const [content, setContent] = useState('');
+  const [context, setContext] = useState('');
+  const [editor, setEditor] = useState('');
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    setEditing(false);
+    setContent(node?.content ?? '');
+    setContext(node?.context ?? '');
+  }, [nodeId, node?.content, node?.context]);
+
+  if (!node) return null;
+  const editable = ASSET_TYPES.includes(node.type) && node.status !== 'superseded';
+  const related = graph.edges
+    .filter(e => e.from_node === nodeId || e.to_node === nodeId)
+    .map(e => {
+      const otherId = e.from_node === nodeId ? e.to_node : e.from_node;
+      const other = graph.nodes.find(n => n.id === otherId);
+      const dir = e.from_node === nodeId ? '→' : '←';
+      return other ? { edge: e, other, dir } : null;
+    })
+    .filter(Boolean) as { edge: KGEdge; other: KGNode; dir: string }[];
+
+  async function save() {
+    if (!content.trim() || !editor.trim()) return;
+    setBusy(true);
+    try {
+      const res = await fetch('/api/edit', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nodeId, content, context, editor }),
+      });
+      const json = await res.json();
+      if (json.ok && json.createdNodeIds?.[0]) {
+        setEditing(false);
+        onJump(json.createdNodeIds[0]);
+      }
+    } finally { setBusy(false); }
+  }
+
+  const inputStyle = {
+    width: '100%', background: '#1e293b', border: '1px solid #334155', borderRadius: 6,
+    color: '#e2e8f0', padding: 8, fontSize: 13, marginBottom: 8,
+  };
+
+  return (
+    <aside style={{
+      position: 'absolute', right: 0, top: 0, bottom: 0, width: 360, zIndex: 20,
+      background: '#0f172a', borderLeft: '1px solid #1e293b', padding: 16, overflowY: 'auto',
+    }}>
+      <button onClick={onClose} style={{ float: 'right', background: 'none', border: 'none', color: '#64748b', fontSize: 18 }}>✕</button>
+      <div style={{ fontSize: 11, textTransform: 'uppercase', color: '#64748b' }}>{node.type} · {node.status}</div>
+      <h2 style={{ fontSize: 16, margin: '6px 0 12px' }}>{node.label}</h2>
+
+      {editing ? (
+        <div>
+          <div style={{ fontSize: 11, color: '#64748b' }}>CONTENT</div>
+          <textarea style={{ ...inputStyle, height: 120 }} value={content} onChange={e => setContent(e.target.value)} />
+          <div style={{ fontSize: 11, color: '#64748b' }}>WHY (CONTEXT)</div>
+          <textarea style={{ ...inputStyle, height: 70 }} value={context} onChange={e => setContext(e.target.value)} />
+          <input style={inputStyle} placeholder="Your name" value={editor} onChange={e => setEditor(e.target.value)} />
+          <button onClick={save} disabled={busy} style={{
+            width: '100%', padding: 10, background: busy ? '#334155' : '#4f46e5', color: 'white',
+            border: 'none', borderRadius: 6, fontSize: 13, marginBottom: 6,
+          }}>{busy ? 'Saving — Auditor reviewing…' : 'Save as new version'}</button>
+          <button onClick={() => setEditing(false)} style={{ width: '100%', padding: 8, background: 'none', border: '1px solid #334155', borderRadius: 6, color: '#94a3b8', fontSize: 12 }}>Cancel</button>
+          <p style={{ fontSize: 11, color: '#64748b', marginTop: 8 }}>Saving creates a new version. The old one stays viewable, and the Auditor reviews your change against firm standards.</p>
+        </div>
+      ) : (
+        <>
+          {node.content && (<>
+            <div style={{ fontSize: 11, color: '#64748b' }}>CONTENT</div>
+            <p style={{ fontSize: 13, whiteSpace: 'pre-wrap', margin: '4px 0 12px', color: '#cbd5e1' }}>{node.content}</p>
+          </>)}
+          {node.context && (<>
+            <div style={{ fontSize: 11, color: '#64748b' }}>WHY (CONTEXT)</div>
+            <p style={{ fontSize: 13, whiteSpace: 'pre-wrap', margin: '4px 0 12px', color: '#a5b4fc' }}>{node.context}</p>
+          </>)}
+          {node.author && <p style={{ fontSize: 12, color: '#64748b' }}>By {node.author}{node.source ? ` · from ${node.source.name}` : ''}</p>}
+          {editable && (
+            <button onClick={() => setEditing(true)} style={{
+              marginTop: 8, padding: '6px 14px', background: 'none', border: '1px solid #4f46e5',
+              borderRadius: 6, color: '#818cf8', fontSize: 12,
+            }}>✏️ Edit (creates new version)</button>
+          )}
+        </>
+      )}
+
+      <div style={{ fontSize: 11, color: '#64748b', marginTop: 12 }}>PROVENANCE & CONNECTIONS</div>
+      {related.map(({ edge, other, dir }) => (
+        <button key={edge.id} onClick={() => onJump(other.id)} style={{
+          display: 'block', width: '100%', textAlign: 'left', margin: '6px 0', padding: 8,
+          background: '#1e293b', border: 'none', borderRadius: 6, color: '#e2e8f0', fontSize: 12,
+        }}>
+          <span style={{ color: '#f472b6' }}>{EDGE_LABELS[edge.type] ?? edge.type} {dir}</span> {other.label}
+        </button>
+      ))}
+    </aside>
+  );
+}
+```
+
+- [ ] **Step C7.4: Verify** — Library tab lists workflows with status dots; filter chips switch types; clicking opens the drawer. Edit `wf-content-qa` to remove the senior-review step → save → drawer jumps to the new version, which flips to red (flagged) within seconds, old version shows gray in Library only when its filter includes it (it won't — superseded is hidden; confirm via the graph, where the gray node and `superseded_by` edge are visible). `npm run seed` to restore.
+
+- [ ] **Step C7.5: Commit** — `git add -A; git pull --rebase; git commit -m "feat: library tab and versioned edit mode"; git push`
+
 ---
 
 ## FINAL PHASE (ALL): Integration, snapshot, rehearsals (T+6:30 →)
@@ -1456,6 +1712,6 @@ export default function AnalyticsPanel() {
 
 ## Plan self-review notes (done at authoring time)
 
-- **Spec coverage:** §1 concept→B1-B4; §2 architecture→0/A1/F2; §3 model→0.5 (uuid→text deviation noted); §4 agents→B2-B4 (Run Council = auditor-only sweep, deviation noted with rationale); §5 UI→C1-C6; §6 seed→A2 (26 nodes vs "~50" — every category and both demo hooks present; flesh out only if time allows); §7 script→F3; §8 order/cuts→timeline table; §9 smoke→A4/F1; §10 exclusions respected.
+- **Spec coverage:** §1 concept→B1-B4; §2 architecture→0/A1/F2; §3 model→0.5 (uuid→text deviation noted); §4 agents→B2-B4 (Run Council = auditor-only sweep, deviation noted with rationale); §5 UI→C1-C7 (Library tab + versioned edit → B6/C7); §6 seed→A2 (26 nodes vs "~50" — every category and both demo hooks present; flesh out only if time allows); §7 script→F3; §8 order/cuts→timeline table; §9 smoke→A4/F1; §10 exclusions respected.
 - **Type consistency:** all cross-track names verified — `runIngestPipeline`, `runCouncilReview`, `runCurator`, `runAuditor`, `llmJson`, `logAction`, `getGraph`, `insertNodes`, `insertEdges`, `setNodeStatus`, `newId`, route paths and payload shapes match `types.ts`.
 - **Known risk:** `curator: merge`/`auditor: flagged` label prefixes are load-bearing for A3's analytics counts — they come from `logAction(agent, action, …)` producing `` `${agent}: ${action}` ``; B3 passes `act.action` (`'merge'`/`'link'`) and B4 passes `'flagged'`/`'approved'`, so prefixes hold.
