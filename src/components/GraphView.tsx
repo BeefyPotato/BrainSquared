@@ -107,7 +107,16 @@ export default function GraphView({ graph, highlightIds, onNodeClick }: {
         linkDirectionalArrowLength={0}
         onNodeClick={(n: GraphNode) => onNodeClick(n.id)}
         cooldownTicks={100}
-        nodeCanvasObjectMode={() => 'replace'}
+        nodeRelSize={1}
+        nodeVal={(n: GraphNode) => {
+          const r = radiusOf(n);
+          return r * r;
+        }}
+        nodeColor={(n: GraphNode) => {
+          const isDim = dimmed && !hi.has(n.id);
+          return isDim ? 'rgba(148,163,184,0.18)' : colorOf(n);
+        }}
+        nodeCanvasObjectMode={() => 'before'}
         nodeCanvasObject={(n: GraphNode, ctx: CanvasRenderingContext2D, globalScale: number) => {
           const x = n.x ?? 0;
           const y = n.y ?? 0;
@@ -115,15 +124,16 @@ export default function GraphView({ graph, highlightIds, onNodeClick }: {
           const isDim = dimmed && !hi.has(n.id);
           const fill = isDim ? 'rgba(148,163,184,0.18)' : colorOf(n);
 
-          ctx.beginPath();
-          ctx.arc(x, y, r, 0, 2 * Math.PI);
+          // soft glow halo, drawn under the library's own default circle
           if (!isDim) {
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, 2 * Math.PI);
             ctx.shadowColor = fill;
-            ctx.shadowBlur = 7;
+            ctx.shadowBlur = 8;
+            ctx.fillStyle = fill;
+            ctx.fill();
+            ctx.shadowBlur = 0;
           }
-          ctx.fillStyle = fill;
-          ctx.fill();
-          ctx.shadowBlur = 0;
 
           if (hi.has(n.id)) {
             ctx.beginPath();
@@ -141,14 +151,6 @@ export default function GraphView({ graph, highlightIds, onNodeClick }: {
           ctx.textBaseline = 'top';
           ctx.fillStyle = isDim ? 'rgba(226,232,240,0.14)' : 'rgba(226,232,240,0.8)';
           ctx.fillText(truncateLabel(n.label, 24), x, y + r + 2);
-        }}
-        nodePointerAreaPaint={(n: GraphNode, paintColor: string, ctx: CanvasRenderingContext2D) => {
-          const x = n.x ?? 0;
-          const y = n.y ?? 0;
-          ctx.fillStyle = paintColor;
-          ctx.beginPath();
-          ctx.arc(x, y, radiusOf(n) + 3, 0, 2 * Math.PI);
-          ctx.fill();
         }}
       />
       <div
