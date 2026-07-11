@@ -41,6 +41,9 @@ server.registerTool(
   }
 );
 
-const transport = new StdioServerTransport();
-await server.connect(transport);
-console.error('BrainSquared MCP server running (stdio)');
+async function main() {
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
+  console.error('BrainSquared MCP server running (stdio)');
+}
+main().catch((e) => { console.error(e); process.exit(1); });
