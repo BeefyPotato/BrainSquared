@@ -80,9 +80,9 @@ Each agent is one focused OpenAI call with JSON output, wrapped in a shared runn
 
 **Curator** — input: new pending nodes + a compact index of all existing nodes (id, type, label, one-line summary; graph is small enough to fit whole). Actions: `link` (add `supports`/`used_in` edges), `merge` (older node → `superseded` + `superseded_by` edge), `pass`. Each action carries one-line reasoning.
 
-**Auditor** — input: surviving pending nodes + **all `standard` and `decision` nodes compiled into its instructions at runtime** (the "memos program the agent" mechanic). Actions: `approve`, `flag` (with `contradicts`/`governs` edge to the exact node cited), `reject`. Flagged nodes stay visible in red; the Auditor never silently deletes.
+**Auditor** — input: the nodes under review + **all non-superseded `standard` and `decision` nodes (any status, `pending` included) compiled into its instructions at runtime** (the "memos program the agent" mechanic — a freshly ingested memo takes effect immediately). Actions: `approve`, `flag` (with `contradicts`/`governs` edge to the exact node cited), `reject`. Flagged nodes stay visible in red; the Auditor never silently deletes.
 
-**Triggers:** automatically on every ingestion; and a manual **Run Council** button that re-reviews all non-approved nodes (the demo's showpiece mechanism).
+**Triggers:** automatically on every ingestion (pipeline runs over the newly ingested nodes); and a manual **Run Council** button that re-reviews **all non-superseded asset nodes, approved ones included** — so a new standard can reverse an earlier approval (the demo's showpiece mechanism).
 
 **Error handling (demo-grade):** each agent call retries once on failure or malformed JSON; on second failure the ingestion lands as `pending` with a visible "awaiting review" state. The app degrades to a human-review queue, never to a stack trace.
 
