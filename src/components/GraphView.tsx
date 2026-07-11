@@ -1,15 +1,16 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react';
 import type { KGNode, KGEdge } from '@/lib/types';
 import { color, radius } from '@/components/theme';
-import type { ForceGraphProps, NodeObject, LinkObject } from 'react-force-graph-2d';
+import type { ForceGraphMethods, ForceGraphProps, NodeObject, LinkObject } from 'react-force-graph-2d';
 
 type EdgeMeta = { type: string };
 type GraphNode = NodeObject<KGNode>;
 type GraphLink = LinkObject<KGNode, EdgeMeta>;
+type FGMethods = ForceGraphMethods<GraphNode, GraphLink>;
 
-const ForceGraph2D = dynamic<ForceGraphProps<KGNode, EdgeMeta>>(
+const ForceGraph2D = dynamic<ForceGraphProps<KGNode, EdgeMeta> & { ref?: MutableRefObject<FGMethods | undefined> }>(
   () => import('react-force-graph-2d'),
   { ssr: false }
 );
@@ -20,12 +21,27 @@ const STATUS_COLORS: Record<string, string> = {
 const TYPE_COLORS: Record<string, string> = {
   person: color.person, project: color.project, source: color.source, agent_action: color.agentAction,
 };
+
+// Obsidian-style hierarchy: asset nodes (the actual captured knowledge) read as the
+// biggest hubs; agent_action entries are ephemeral governance log markers, smallest.
+const NODE_RADIUS: Record<string, number> = {
+  agent_action: 2.4,
+  source: 3.6,
+  person: 4.6,
+  project: 4.6,
+  prompt: 5.8, workflow: 5.8, agent_config: 5.8, lesson: 5.8, decision: 5.8, standard: 5.8,
+};
+
 const LEGEND: { label: string; c: string }[] = [
   { label: 'Person', c: color.person },
   { label: 'Project', c: color.project },
   { label: 'Source', c: color.source },
   { label: 'Agent action', c: color.agentAction },
 ];
+
+function truncateLabel(s: string, max: number) {
+  return s.length > max ? `${s.slice(0, max - 1)}…` : s;
+}
 
 export default function GraphView({ graph, highlightIds, onNodeClick }: {
   graph: { nodes: KGNode[]; edges: KGEdge[] };
@@ -55,29 +71,85 @@ export default function GraphView({ graph, highlightIds, onNodeClick }: {
     return () => ro.disconnect();
   }, []);
 
+  const fgRef = useRef<FGMethods | undefined>(undefined);
+  useEffect(() => {
+    const fg = fgRef.current;
+    if (!fg) return;
+    (fg.d3Force('charge') as { strength?: (v: number) => void } | undefined)?.strength?.(-160);
+    (fg.d3Force('link') as { distance?: (v: number) => void } | undefined)?.distance?.(58);
+  }, [data]);
+
+  function radiusOf(n: GraphNode): number {
+    const base = NODE_RADIUS[n.type] ?? 4.6;
+    return hi.has(n.id) ? base + 3 : base;
+  }
+  function colorOf(n: GraphNode): string {
+    return TYPE_COLORS[n.type] ?? STATUS_COLORS[n.status] ?? color.textMuted;
+  }
+
   return (
     <div ref={containerRef} style={{ position: 'relative', width: '100%', height: '100%' }}>
       <ForceGraph2D
+        ref={fgRef}
         width={size.width || undefined}
         height={size.height || undefined}
         graphData={data}
         backgroundColor={color.bg}
         nodeId="id"
         nodeLabel={(n: GraphNode) => `${n.type}: ${n.label}`}
-        nodeVal={(n: GraphNode) => (hi.has(n.id) ? 10 : 4)}
-        nodeColor={(n: GraphNode) => {
-          if (dimmed && !hi.has(n.id)) return 'rgba(255,255,255,0.08)';
-          return TYPE_COLORS[n.type] ?? STATUS_COLORS[n.status] ?? color.textMuted;
-        }}
         linkColor={(l: GraphLink) => {
           const sourceId = String(typeof l.source === 'object' ? l.source?.id : l.source);
           const targetId = String(typeof l.target === 'object' ? l.target?.id : l.target);
           return dimmed && !(hi.has(sourceId) && hi.has(targetId))
-            ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.14)';
+            ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.12)';
         }}
-        linkDirectionalArrowLength={3}
+        linkWidth={0.6}
+        linkDirectionalArrowLength={0}
         onNodeClick={(n: GraphNode) => onNodeClick(n.id)}
-        cooldownTicks={80}
+        cooldownTicks={100}
+        nodeCanvasObjectMode={() => 'replace'}
+        nodeCanvasObject={(n: GraphNode, ctx: CanvasRenderingContext2D, globalScale: number) => {
+          const x = n.x ?? 0;
+          const y = n.y ?? 0;
+          const r = radiusOf(n);
+          const isDim = dimmed && !hi.has(n.id);
+          const fill = isDim ? 'rgba(148,163,184,0.18)' : colorOf(n);
+
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, 2 * Math.PI);
+          if (!isDim) {
+            ctx.shadowColor = fill;
+            ctx.shadowBlur = 7;
+          }
+          ctx.fillStyle = fill;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          if (hi.has(n.id)) {
+            ctx.beginPath();
+            ctx.arc(x, y, r + 2, 0, 2 * Math.PI);
+            ctx.strokeStyle = fill;
+            ctx.globalAlpha = 0.45;
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+          }
+
+          const fontSize = Math.max(3.6, 10.5 / globalScale);
+          ctx.font = `${fontSize}px Inter, ui-sans-serif, system-ui, sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'top';
+          ctx.fillStyle = isDim ? 'rgba(226,232,240,0.14)' : 'rgba(226,232,240,0.8)';
+          ctx.fillText(truncateLabel(n.label, 24), x, y + r + 2);
+        }}
+        nodePointerAreaPaint={(n: GraphNode, paintColor: string, ctx: CanvasRenderingContext2D) => {
+          const x = n.x ?? 0;
+          const y = n.y ?? 0;
+          ctx.fillStyle = paintColor;
+          ctx.beginPath();
+          ctx.arc(x, y, radiusOf(n) + 3, 0, 2 * Math.PI);
+          ctx.fill();
+        }}
       />
       <div
         style={{
