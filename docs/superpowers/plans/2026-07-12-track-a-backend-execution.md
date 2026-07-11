@@ -36,7 +36,7 @@ export async function setNodeStatus(id: string, status: NodeStatus): Promise<voi
 ```
 
 - `GET /api/analytics` → `AnalyticsSummary` (Task 3; Track C's AnalyticsPanel renders it).
-- Seeded graph = 26 nodes / 24 edges from `data/seed.json` (Task 2; Track C renders it at sync point S1).
+- Seeded graph = 27 nodes / 24 edges from `data/seed.json` (Task 2; Track C renders it at sync point S1).
 - `scripts/smoke.ts` imports `runIngestPipeline` from `src/lib/agents/pipeline` — Track B's exact export name (Task 4; runnable only after their Task B2/B4 land).
 
 ---
@@ -163,7 +163,7 @@ git add -A && git pull --rebase && git commit -m "feat: supabase data access lay
 
 **Interfaces:**
 - Consumes: `supabase` client and `getGraph` from Task 1.
-- Produces: the seeded graph (26 nodes, 24 edges) that Track C renders at sync point S1; the two demo fixtures used in demo beats 2 and 4; `npm run seed` (demo reset command) and `npm run snapshot` (fallback generator). Planted hooks: `pr-client-research` (the conversation fixture contains a near-duplicate → Curator merge beat) and `wf-fasttrack` (approved now; the memo fixture contradicts it → Auditor reversal beat, the showpiece).
+- Produces: the seeded graph (27 nodes, 24 edges) that Track C renders at sync point S1; the two demo fixtures used in demo beats 2 and 4; `npm run seed` (demo reset command) and `npm run snapshot` (fallback generator). Planted hooks: `pr-client-research` (the conversation fixture contains a near-duplicate → Curator merge beat) and `wf-fasttrack` (approved now; the memo fixture contradicts it → Auditor reversal beat, the showpiece).
 
 - [ ] **Step 1: Write `data/seed.json`** (verbatim from master plan Step A2.1 — fictional firm Meridian Advisory, teams Strategy/Diligence/Digital):
 
@@ -307,7 +307,7 @@ main().catch((e) => { console.error(e); process.exit(1); });
 npm run seed
 ```
 
-Expected output exactly: `Seeded 26 nodes, 24 edges`
+Expected output exactly: `Seeded 27 nodes, 24 edges`
 
 - [ ] **Step 7: Verify idempotency** (the demo depends on reseeding between rehearsals)
 
@@ -323,7 +323,7 @@ Expected: same output again, no duplicate-key errors.
 npm run snapshot
 ```
 
-Expected output: `Snapshot: 26 nodes, 24 edges` and `public/fallback-snapshot.json` now exists.
+Expected output: `Snapshot: 27 nodes, 24 edges` and `public/fallback-snapshot.json` now exists.
 
 - [ ] **Step 9: Commit — this is SYNC POINT S1**
 
@@ -500,7 +500,7 @@ git add public/fallback-snapshot.json && git pull --rebase && git commit -m "cho
 
 - [ ] **Step 3: Test fallback mode.** Add `NEXT_PUBLIC_USE_FALLBACK=1` to `.env.local`, restart the dev server, open http://localhost:3000.
 
-Expected: the graph renders from `public/fallback-snapshot.json` (26 nodes) with no Supabase traffic. Ingest won't work in this mode — that's accepted.
+Expected: the graph renders from `public/fallback-snapshot.json` (27 nodes) with no Supabase traffic. Ingest won't work in this mode — that's accepted.
 
 - [ ] **Step 4: Remove the flag.** Delete the `NEXT_PUBLIC_USE_FALLBACK=1` line from `.env.local`, restart the dev server, confirm the live graph loads again.
 
