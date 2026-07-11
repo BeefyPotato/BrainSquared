@@ -10,13 +10,19 @@ const QUICK_TASKS = [
   'Plan a new client onboarding',
 ];
 
+type TaskResult = { answer: string; nodeIds: string[] };
+
+// The panel unmounts whenever the user traces a result into the graph (the tab
+// switches to Company Memory), so the last session lives here to survive that.
+let cachedSession: { desc: string; res: TaskResult } | null = null;
+
 export default function TaskPanel({ graph, onHighlight }: {
   graph: { nodes: KGNode[]; edges: KGEdge[] };
   onHighlight: (ids: string[]) => void;
 }) {
-  const [desc, setDesc] = useState('');
+  const [desc, setDesc] = useState(cachedSession?.desc ?? '');
   const [busy, setBusy] = useState(false);
-  const [res, setRes] = useState<{ answer: string; nodeIds: string[] } | null>(null);
+  const [res, setRes] = useState<TaskResult | null>(cachedSession?.res ?? null);
 
   async function go() {
     if (!desc.trim() || busy) return;
@@ -27,7 +33,10 @@ export default function TaskPanel({ graph, onHighlight }: {
         body: JSON.stringify({ description: desc }),
       });
       const json = await r.json();
-      if (json.ok) setRes(json);
+      if (json.ok) {
+        setRes(json);
+        cachedSession = { desc, res: json };
+      }
     } finally { setBusy(false); }
   }
 
@@ -143,7 +152,24 @@ export default function TaskPanel({ graph, onHighlight }: {
                     </span>
                   </div>
                   <div style={{ fontSize: 14, fontWeight: 700, color: color.text, lineHeight: 1.35 }}>{n.label}</div>
-                  <div style={{ fontSize: 13, color: color.textMuted, lineHeight: 1.55, flex: 1 }}>{n.context.slice(0, 140)}</div>
+                  {n.content && (
+                    <div
+                      style={{
+                        fontSize: 12.5, color: color.text, lineHeight: 1.55, whiteSpace: 'pre-wrap',
+                        background: color.surface2, border: `1px solid ${color.border}`,
+                        borderRadius: radius.sm, padding: '10px 12px',
+                        maxHeight: 170, overflowY: 'auto',
+                      }}
+                    >
+                      {n.content}
+                    </div>
+                  )}
+                  {n.context && (
+                    <div style={{ fontSize: 12.5, color: color.textMuted, lineHeight: 1.55, flex: 1 }}>
+                      <span style={{ fontWeight: 700, color: color.brandText }}>Why it works: </span>
+                      {n.context}
+                    </div>
+                  )}
                   <button
                     onClick={() => trace(id)}
                     style={{
