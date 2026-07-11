@@ -53,7 +53,7 @@ All shared types in `src/lib/types.ts` (full code in Task 0).
 **Files:**
 - Create: whole Next.js scaffold, `src/lib/types.ts`, `supabase/schema.sql`, `.env.local`, `data/` and `scripts/` dirs
 
-- [ ] **Step 0.1: Scaffold and install.** The repo already contains the folder skeleton (placeholder files pointing at their plan tasks), and `create-next-app` refuses non-empty directories — so scaffold in a sibling temp folder and copy the generated base files in, keeping the skeleton:
+- [x] **Step 0.1: Scaffold and install.** The repo already contains the folder skeleton (placeholder files pointing at their plan tasks), and `create-next-app` refuses non-empty directories — so scaffold in a sibling temp folder and copy the generated base files in, keeping the skeleton:
 
 ```powershell
 # from the repo root's PARENT directory:
@@ -70,7 +70,7 @@ npm i -D tsx
 
 (`src/app/page.tsx` placeholder stays — Task C1 replaces it. Delete `src/app/favicon.ico` copying if it complains; it's optional.)
 
-- [ ] **Step 0.2: Add scripts to `package.json`** (inside `"scripts"`)
+- [x] **Step 0.2: Add scripts to `package.json`** (inside `"scripts"`)
 
 ```json
 "seed": "tsx scripts/seed.ts",
@@ -117,7 +117,7 @@ OPENAI_API_KEY=sk-...
 OPENAI_MODEL=gpt-4.1
 ```
 
-- [ ] **Step 0.5: Create `src/lib/types.ts`** — the single source of truth every track imports:
+- [x] **Step 0.5: Create `src/lib/types.ts`** — the single source of truth every track imports:
 
 ```ts
 export type NodeType =
@@ -185,9 +185,9 @@ export interface AnalyticsSummary {
 }
 ```
 
-- [ ] **Step 0.6: Verify** — `npm run dev`, open http://localhost:3000, default Next page loads. `npx tsc --noEmit` passes.
+- [x] **Step 0.6: Verify** — `npm run dev`, open http://localhost:3000, default Next page loads. `npx tsc --noEmit` passes.
 
-- [ ] **Step 0.7: Commit and push**
+- [x] **Step 0.7: Commit and push**
 
 ```powershell
 git add -A; git pull --rebase; git commit -m "chore: scaffold Next.js app, shared types, Supabase schema"; git push
