@@ -36,6 +36,11 @@ export async function runCurator(targetIds: string[]): Promise<{ log: CouncilLog
     if (act.action === 'pass') continue;
     if (!act.target_id) continue;
     if (act.action === 'merge') {
+      // Safety invariant: the Curator may only merge same-type duplicates.
+      // Cross-type "supersedes" judgments belong to the Auditor (protects the memo-moment demo beat).
+      const source = targets.find(n => n.id === act.node_id);
+      const target = nodes.find(n => n.id === act.target_id);
+      if (!source || !target || source.type !== target.type) continue;
       await setNodeStatus(act.target_id, 'superseded');
       await insertEdges([{ id: newId('e'), from_node: act.target_id, to_node: act.node_id, type: 'superseded_by' }]);
     } else if (act.action === 'link' && act.edge_type) {
