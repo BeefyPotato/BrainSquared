@@ -94,14 +94,14 @@ export default function GraphView({ graph, highlightIds, onNodeClick }: {
         width={size.width || undefined}
         height={size.height || undefined}
         graphData={data}
-        backgroundColor={color.bg}
+        backgroundColor="rgba(0,0,0,0)"
         nodeId="id"
         nodeLabel={(n: GraphNode) => `${n.type}: ${n.label}`}
         linkColor={(l: GraphLink) => {
           const sourceId = String(typeof l.source === 'object' ? l.source?.id : l.source);
           const targetId = String(typeof l.target === 'object' ? l.target?.id : l.target);
           return dimmed && !(hi.has(sourceId) && hi.has(targetId))
-            ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.12)';
+            ? 'rgba(20,41,43,0.04)' : 'rgba(20,41,43,0.16)';
         }}
         linkWidth={0.6}
         linkDirectionalArrowLength={0}
@@ -114,7 +114,7 @@ export default function GraphView({ graph, highlightIds, onNodeClick }: {
         }}
         nodeColor={(n: GraphNode) => {
           const isDim = dimmed && !hi.has(n.id);
-          return isDim ? 'rgba(148,163,184,0.18)' : colorOf(n);
+          return isDim ? 'rgba(100,116,139,0.20)' : colorOf(n);
         }}
         nodeCanvasObjectMode={() => 'before'}
         nodeCanvasObject={(n: GraphNode, ctx: CanvasRenderingContext2D, globalScale: number) => {
@@ -122,7 +122,7 @@ export default function GraphView({ graph, highlightIds, onNodeClick }: {
           const y = n.y ?? 0;
           const r = radiusOf(n);
           const isDim = dimmed && !hi.has(n.id);
-          const fill = isDim ? 'rgba(148,163,184,0.18)' : colorOf(n);
+          const fill = isDim ? 'rgba(100,116,139,0.20)' : colorOf(n);
 
           // soft glow halo, drawn under the library's own default circle
           if (!isDim) {
@@ -149,19 +149,19 @@ export default function GraphView({ graph, highlightIds, onNodeClick }: {
           ctx.font = `${fontSize}px Inter, ui-sans-serif, system-ui, sans-serif`;
           ctx.textAlign = 'center';
           ctx.textBaseline = 'top';
-          ctx.fillStyle = isDim ? 'rgba(226,232,240,0.14)' : 'rgba(226,232,240,0.8)';
+          ctx.fillStyle = isDim ? 'rgba(20,41,43,0.15)' : 'rgba(20,41,43,0.72)';
           ctx.fillText(truncateLabel(n.label, 24), x, y + r + 2);
         }}
       />
       <div
         style={{
-          position: 'absolute', left: 16, bottom: 16, display: 'flex', flexWrap: 'wrap', gap: 8,
-          padding: '8px 10px', borderRadius: radius.md, background: 'rgba(13,26,40,0.85)',
+          position: 'absolute', left: 16, bottom: 16, display: 'flex', flexWrap: 'wrap', gap: 10,
+          padding: '9px 12px', borderRadius: radius.md, background: 'rgba(255,255,255,0.88)',
           border: `1px solid ${color.border}`, backdropFilter: 'blur(6px)', pointerEvents: 'none',
         }}
       >
         {LEGEND.map((l) => (
-          <span key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 10, color: color.textMuted }}>
+          <span key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11.5, color: color.textMuted }}>
             <span style={{ width: 7, height: 7, borderRadius: '50%', background: l.c }} />
             {l.label}
           </span>

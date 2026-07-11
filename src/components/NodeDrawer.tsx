@@ -2,16 +2,12 @@
 import { useEffect, useState } from 'react';
 import { ASSET_TYPES, type KGNode, type KGEdge } from '@/lib/types';
 import { IconClose, IconArrowUpRight, IconEdit, IconSave, IconSpinner } from '@/components/icons';
-import { color, font, inputStyle, primaryButtonStyle, radius, secondaryButtonStyle, shadow, space, statusSoft, tagStyle } from '@/components/theme';
+import { color, font, inputStyle, primaryButtonStyle, radius, secondaryButtonStyle, shadow, space, statusSoft, statusText, tagStyle } from '@/components/theme';
 
 const EDGE_LABELS: Record<string, string> = {
   derived_from: 'Derived from', authored_by: 'Authored by', used_in: 'Used in',
   supports: 'Supports', contradicts: 'Contradicts', superseded_by: 'Superseded by',
   reviewed_by: 'Reviewed', governs: 'Cites standard',
-};
-
-const STATUS_FG: Record<string, string> = {
-  pending: color.pending, approved: color.approved, flagged: color.flagged, superseded: color.superseded,
 };
 
 export default function NodeDrawer({ graph, nodeId, onClose, onJump }: {
@@ -84,7 +80,8 @@ export default function NodeDrawer({ graph, nodeId, onClose, onJump }: {
         <span style={{ fontSize: 10, fontWeight: 700, color: color.textFaint, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
           {node.type.replace('_', ' ')}
         </span>
-        <span style={tagStyle(statusSoft[node.status] ?? 'rgba(255,255,255,0.08)', STATUS_FG[node.status] ?? color.textMuted)}>
+        <span style={tagStyle(statusSoft[node.status] ?? color.surface2, statusText[node.status] ?? color.textMuted)}>
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: color[node.status] }} />
           {node.status}
         </span>
       </div>

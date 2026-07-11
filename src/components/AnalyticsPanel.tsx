@@ -2,28 +2,23 @@
 import { useEffect, useState } from 'react';
 import type { AnalyticsSummary } from '@/lib/types';
 import { IconAlertTriangle, IconSpinner } from '@/components/icons';
-import { color, font, radius, space } from '@/components/theme';
+import { cardHeadStyle, cardStyle, color, font, heroStyle, heroSubStyle, heroTitleStyle, radius, space } from '@/components/theme';
 
-function Bars({ title, data }: { title: string; data: Record<string, number> }) {
+function Bars({ data }: { data: Record<string, number> }) {
   const max = Math.max(1, ...Object.values(data));
   const entries = Object.entries(data);
+  if (entries.length === 0) return <p style={{ fontSize: 13, color: color.textFaint, margin: 0 }}>No data yet.</p>;
   return (
-    <div style={{ marginBottom: space.xl }}>
-      <div style={{ fontSize: 10, fontWeight: 700, color: color.textFaint, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
-        {title}
-      </div>
-      {entries.length === 0 && <p style={{ fontSize: 11.5, color: color.textFaint }}>No data yet.</p>}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        {entries.map(([k, v]) => (
-          <div key={k} style={{ display: 'grid', gridTemplateColumns: '96px 1fr 24px', alignItems: 'center', gap: 8, fontSize: 11.5 }}>
-            <span style={{ color: color.textMuted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{k}</span>
-            <div style={{ height: 8, background: color.surface2, borderRadius: radius.pill, overflow: 'hidden' }}>
-              <div style={{ height: '100%', width: `${(v / max) * 100}%`, background: color.brand, borderRadius: radius.pill }} />
-            </div>
-            <span style={{ color: color.text, fontWeight: 600, textAlign: 'right' }}>{v}</span>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      {entries.map(([k, v]) => (
+        <div key={k} style={{ display: 'grid', gridTemplateColumns: '110px 1fr 28px', alignItems: 'center', gap: 10, fontSize: 13 }}>
+          <span style={{ color: color.textMuted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{k}</span>
+          <div style={{ height: 9, background: '#e8f1ef', borderRadius: radius.pill, overflow: 'hidden' }}>
+            <div style={{ height: '100%', width: `${(v / max) * 100}%`, background: color.brand, borderRadius: radius.pill }} />
           </div>
-        ))}
-      </div>
+          <span style={{ color: color.text, fontWeight: 700, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{v}</span>
+        </div>
+      ))}
     </div>
   );
 }
@@ -34,8 +29,8 @@ export default function AnalyticsPanel() {
 
   if (!a) {
     return (
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: color.textFaint, fontFamily: font.family }}>
-        <IconSpinner size={13} /> Computing…
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: color.textMuted, fontFamily: font.family }}>
+        <IconSpinner size={14} /> Computing…
       </div>
     );
   }
@@ -48,32 +43,72 @@ export default function AnalyticsPanel() {
 
   return (
     <div style={{ fontFamily: font.family }}>
-      <h1 style={{ fontSize: 16, fontWeight: 700, color: color.text, margin: '0 0 16px' }}>Analytics</h1>
+      <div style={heroStyle}>
+        <div>
+          <h1 style={heroTitleStyle}>Capability analytics</h1>
+          <p style={heroSubStyle}>What the firm knows, where it&apos;s growing, and what&apos;s still missing.</p>
+        </div>
+      </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: space.xl }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: space.xl }}>
         {stats.map((s) => (
-          <div key={s.label} style={{ background: color.surface, border: `1px solid ${color.border}`, borderRadius: radius.md, padding: '12px 10px', textAlign: 'center' }}>
-            <div style={{ fontSize: 22, fontWeight: 800, color: color.text }}>{s.value}</div>
-            <div style={{ fontSize: 10, color: color.textFaint, marginTop: 3 }}>{s.label}</div>
+          <div key={s.label} style={{ ...cardStyle, padding: '16px 18px' }}>
+            <div style={{ fontSize: 28, fontWeight: 800, color: color.text, letterSpacing: '-0.03em', fontVariantNumeric: 'tabular-nums' }}>
+              {s.value}
+            </div>
+            <div style={{ fontSize: 12.5, color: color.textMuted, marginTop: 4 }}>{s.label}</div>
           </div>
         ))}
       </div>
 
-      <Bars title="Capability by type (growing)" data={a.assetsByType} />
-      <Bars title="Capability by team" data={a.assetsByTeam} />
-
-      <div style={{ fontSize: 10, fontWeight: 700, color: color.textFaint, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
-        Gaps (missing)
-      </div>
-      {a.gaps.length === 0 && <p style={{ fontSize: 11.5, color: color.textMuted }}>No coverage gaps detected.</p>}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-        {a.gaps.map(g => (
-          <div key={g} style={{ display: 'flex', gap: 7, alignItems: 'flex-start', fontSize: 11.5, color: '#fbbf24', lineHeight: 1.5 }}>
-            <IconAlertTriangle size={13} style={{ flexShrink: 0, marginTop: 1 }} />
-            {g}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 16, marginBottom: space.xl }}>
+        <section style={cardStyle}>
+          <div style={cardHeadStyle}>
+            <div>
+              <strong style={{ fontSize: 14, display: 'block' }}>Capability by type</strong>
+              <small style={{ fontSize: 12, color: color.textMuted }}>What kind of know-how is growing.</small>
+            </div>
           </div>
-        ))}
+          <div style={{ padding: 16 }}><Bars data={a.assetsByType} /></div>
+        </section>
+
+        <section style={cardStyle}>
+          <div style={cardHeadStyle}>
+            <div>
+              <strong style={{ fontSize: 14, display: 'block' }}>Capability by team</strong>
+              <small style={{ fontSize: 12, color: color.textMuted }}>Where knowledge compounds fastest.</small>
+            </div>
+          </div>
+          <div style={{ padding: 16 }}><Bars data={a.assetsByTeam} /></div>
+        </section>
       </div>
+
+      <section style={cardStyle}>
+        <div style={cardHeadStyle}>
+          <div>
+            <strong style={{ fontSize: 14, display: 'block' }}>Coverage gaps</strong>
+            <small style={{ fontSize: 12, color: color.textMuted }}>Capability the firm is missing.</small>
+          </div>
+        </div>
+        <div style={{ padding: 16 }}>
+          {a.gaps.length === 0 && <p style={{ fontSize: 13, color: color.textMuted, margin: 0 }}>No coverage gaps detected.</p>}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {a.gaps.map(g => (
+              <div key={g} style={{ display: 'grid', gridTemplateColumns: '32px 1fr', gap: 11, alignItems: 'start' }}>
+                <span
+                  style={{
+                    width: 32, height: 32, borderRadius: radius.sm, display: 'grid', placeItems: 'center',
+                    background: 'rgba(234,179,8,0.16)', color: '#854d0e',
+                  }}
+                >
+                  <IconAlertTriangle size={15} />
+                </span>
+                <span style={{ fontSize: 13, color: color.text, lineHeight: 1.55, paddingTop: 6 }}>{g}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
