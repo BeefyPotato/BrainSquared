@@ -9,10 +9,11 @@ import CouncilLog from '@/components/CouncilLog';
 import TaskPanel from '@/components/TaskPanel';
 import AnalyticsPanel from '@/components/AnalyticsPanel';
 import LibraryPanel from '@/components/LibraryPanel';
-import { IconInbox, IconScale, IconTarget, IconBarChart, IconBook, IconLink } from '@/components/icons';
+import ImpactPanel from '@/components/ImpactPanel';
+import { IconInbox, IconScale, IconTarget, IconBarChart, IconBook, IconLink, IconStar } from '@/components/icons';
 import { color, font, heroStyle, heroSubStyle, heroTitleStyle, pageStyle, radius } from '@/components/theme';
 
-type Tab = 'Start a task' | 'Capture' | 'Council Log' | 'Library' | 'Analytics' | 'Company Memory';
+type Tab = 'Start a task' | 'Capture' | 'Council Log' | 'Library' | 'Analytics' | 'My Impact' | 'Company Memory';
 
 const STATUS_LEGEND: { label: string; c: string }[] = [
   { label: 'Pending', c: color.pending },
@@ -70,6 +71,7 @@ export default function Home() {
         { id: 'Council Log', label: 'Council Log', icon: IconScale, count: councilCount },
         { id: 'Library', label: 'Library', icon: IconBook, count: libraryCount },
         { id: 'Analytics', label: 'Analytics', icon: IconBarChart },
+        { id: 'My Impact', label: 'My Impact', icon: IconStar },
       ],
     },
     {
@@ -263,6 +265,7 @@ export default function Home() {
               {tab === 'Council Log' && <CouncilLog graph={graph} onHighlight={highlightAndShow} />}
               {tab === 'Library' && <LibraryPanel graph={graph} onSelect={openNode} />}
               {tab === 'Analytics' && <AnalyticsPanel />}
+              {tab === 'My Impact' && <ImpactPanel />}
             </div>
           </div>
         )}

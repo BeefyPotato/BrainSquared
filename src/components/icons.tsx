@@ -220,3 +220,22 @@ export function IconSave(props: IconProps) {
     </Base>
   );
 }
+
+export function IconStar(props: IconProps) {
+  return (
+    <Base {...props}>
+      <polygon points="12 3 14.6 9.2 21.2 9.7 16.2 13.9 17.8 20.4 12 16.8 6.2 20.4 7.8 13.9 2.8 9.7 9.4 9.2" />
+    </Base>
+  );
+}
+
+export function IconRefresh(props: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M4 12a8 8 0 0 1 13.66-5.66L20 8" />
+      <polyline points="20 3 20 8 15 8" />
+      <path d="M20 12a8 8 0 0 1-13.66 5.66L4 16" />
+      <polyline points="4 21 4 16 9 16" />
+    </Base>
+  );
+}
