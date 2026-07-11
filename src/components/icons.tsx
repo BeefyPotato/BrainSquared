@@ -201,3 +201,22 @@ export function IconLink(props: IconProps) {
     </Base>
   );
 }
+
+export function IconBook(props: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M4 5c2-1 5-1 8 0v14c-3-1-6-1-8 0z" />
+      <path d="M20 5c-2-1-5-1-8 0v14c3-1 6-1 8 0z" />
+    </Base>
+  );
+}
+
+export function IconSave(props: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M5 4h11l3 3v13H5z" />
+      <rect x="8" y="4" width="7" height="5" />
+      <rect x="7" y="14" width="10" height="6" />
+    </Base>
+  );
+}

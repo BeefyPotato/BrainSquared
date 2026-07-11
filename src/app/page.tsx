@@ -8,13 +8,15 @@ import CapturePanel from '@/components/CapturePanel';
 import CouncilLog from '@/components/CouncilLog';
 import TaskPanel from '@/components/TaskPanel';
 import AnalyticsPanel from '@/components/AnalyticsPanel';
-import { IconInbox, IconScale, IconTarget, IconBarChart } from '@/components/icons';
+import LibraryPanel from '@/components/LibraryPanel';
+import { IconInbox, IconScale, IconTarget, IconBarChart, IconBook } from '@/components/icons';
 import { color, font, radius, space } from '@/components/theme';
 
 const TABS = [
   { id: 'Capture', label: 'Capture', icon: IconInbox },
   { id: 'Council Log', label: 'Council Log', icon: IconScale },
   { id: 'Start a task', label: 'Start a task', icon: IconTarget },
+  { id: 'Library', label: 'Library', icon: IconBook },
   { id: 'Analytics', label: 'Analytics', icon: IconBarChart },
 ] as const;
 type Tab = (typeof TABS)[number]['id'];
@@ -171,6 +173,7 @@ export default function Home() {
             {tab === 'Capture' && <CapturePanel onDone={refetch} />}
             {tab === 'Council Log' && <CouncilLog graph={graph} onHighlight={setHighlightIds} />}
             {tab === 'Start a task' && <TaskPanel onHighlight={setHighlightIds} graph={graph} />}
+            {tab === 'Library' && <LibraryPanel graph={graph} onSelect={setSelectedNodeId} />}
             {tab === 'Analytics' && <AnalyticsPanel />}
           </section>
         </div>
