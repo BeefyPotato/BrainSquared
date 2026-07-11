@@ -117,8 +117,10 @@ Demo fixtures shipped in repo: one messy-but-realistic Claude conversation expor
 2. **0:45–1:45 Exhaust capture.** Paste the Claude conversation fixture → Scribe distills three yellow nodes (prompt, workflow, lesson) with why-context and provenance. *"Nobody did data entry."*
 3. **1:45–2:45 The Council governs.** Curator merges the planted duplicate (gray-out animates). Auditor approves two, flags one, citing the standard violated. Click the log entry → the graph lights up the reasoning chain.
 4. **2:45–3:30 The memo moment (showpiece).** Upload the leadership memo ("all AI client deliverables require senior review — after the Menlo incident") → `standard` node lands → **Run Council** → Auditor reverses an earlier approval, red edge pointing at the memo node. *"Leadership wrote a memo — the agents learned it."*
-5. **3:30–4:15 Reuse + analytics.** "Start a task": "market-entry study for a retail client" → best assets with provenance. Flip to Analytics. *"Individual learning is now permanent organizational capability."*
-6. **4:15–5:00 Vision.** If the stretch MCP server was built: show it (live or the 20-second backup clip) — "the employee never leaves their AI tool; the knowledge saves itself." Then roadmap: auto-capture across all AI clients, role-aware access, enterprise SSO.
+5. **3:30–4:15 Reuse + analytics.** "Start a task": "market-entry study for a retail client" → best assets with provenance. Flip to Analytics (growing / duplicated / missing). If built: the Library edit beat (edit a workflow → Auditor flags it) or the MCP capture (live or the 20-second backup clip — "the knowledge saves itself"). *"Individual learning is now permanent organizational capability."*
+6. **4:15–5:00 Business close** (business teammate takes this minute — spoken script lives in BUSINESS_GUIDE.md §6). Callback: *"You asked for five things — you just saw all five."* Who pays, why they stay (compounding moat), roadmap: auto-capture across all AI clients, role-aware access, enterprise SSO.
+
+The demo follows this click-path; the spoken lines and Q&A prep live in `BUSINESS_GUIDE.md` §2 and §6 — the two documents must stay in sync. If a feature is cut during the build, its row in BUSINESS_GUIDE §2 must be struck the same hour.
 
 ## 8. Build order and cut lines
 

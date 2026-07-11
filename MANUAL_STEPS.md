@@ -161,8 +161,9 @@ The five rules:
 2. **Split into tracks.** Work your tasks in order. One task at a time: AI implements → you verify → commit → push → next task.
 3. **Watch for the four announcements:** S1 (data), S2 (ingest live), S3 (memo moment works), S4 (all tabs live). They're the handoff points — if you're blocked waiting for one, help the person producing it instead of starting something new.
 4. **Running late?** Cut in this order (already decided, don't debate at 3 AM): Analytics tab → MCP capture (B7 — the pitch falls back to the roadmap slide) → Library/edit feature (B6+C7). **Never cut** the agents pipeline, the memo moment, or Start a task — they're the pitch.
-5. **Last 90 minutes — all together again:** `npm run seed` → `npm run smoke` (must print SMOKE PASS) → `npm run snapshot` → commit. Then run the full 5-minute demo **twice**, timed, following the script in the spec (§7). Reseed between runs. Fix only what breaks the demo; resist polishing.
-6. **Before you sleep:** push everything, and have `data/fixtures/claude-conversation.txt` and `data/fixtures/leadership-memo.txt` open in Notepad tabs on the demo laptop, ready to paste on stage.
+5. **Last 90 minutes — all together again:** `npm run seed` → `npm run smoke` (must print SMOKE PASS) → `npm run snapshot` → commit. Then run the full 5-minute demo **twice**, timed, with the business team in the room: engineers follow the click-path in the spec (§7), the speaker follows the spoken script in BUSINESS_GUIDE.md (§6). Reseed between runs. Fix only what breaks the demo; resist polishing.
+6. **If you cut a feature, tell the business team immediately** — every feature has a row in BUSINESS_GUIDE.md §2 that the pitch is built on. A cut feature that stays in the pitch is how demos die on stage.
+7. **Before you sleep:** push everything, and have `data/fixtures/claude-conversation.txt` and `data/fixtures/leadership-memo.txt` open in Notepad tabs on the demo laptop, ready to paste on stage.
 
 **Demo-day morning:** `git pull` on the demo laptop, `npm run seed`, `npm run dev`, one final run-through before 9:00 AM submission. If the venue wifi dies: set `NEXT_PUBLIC_USE_FALLBACK=1` in `.env.local`, restart the dev server — the graph renders from the saved snapshot and you narrate the capture beats over the pre-recorded/backup material.
 

@@ -76,6 +76,7 @@ The loop: **work → capture → clean → govern → reuse → improve → repe
 - **Colors tell the story:** yellow = just arrived, being checked · green = approved and trusted · red = breaks a rule · gray = old version, replaced.
 - You *watch the librarians work live*: new dots bloom yellow, then flip green or red as they're judged. The product feels alive — that's the emotional hook.
 - Right side, five simple tabs: **Capture** (drop knowledge in) · **Council Log** (the librarians' activity feed — every decision explained) · **Start a task** (get the firm's best know-how) · **Library** (browse and edit workflows/prompts) · **Analytics** (the dashboard).
+- **Naming note for speakers:** on screen, the three librarians are collectively called **"the Council"** (that's the tab name the audience will see). Say it once early — "our council of AI librarians" — so the screen and your words match. (The Library tab and edit feature are the lowest-priority build items; check with engineering before the pitch whether they made it in, and strike their rows from section 2 if not.)
 - Click any dot and you get its full story: what it is, **why it works**, who made it, and every decision made about it. **Nothing is a black box** — this transparency is a selling point, not a design detail.
 
 ---
@@ -149,6 +150,7 @@ Technical question from a judge? Hand it over with a smile: "Great question — 
 ## 11. Your checklist
 
 - [ ] Learn the section-2 table until you can recite the right-hand column from memory — it's the pitch AND the Q&A cheat sheet.
+- [ ] **Before the final rehearsal, confirm with engineering which features made it in** (Analytics, Library/edit, and the AI-chat capture bridge are the ones that might be cut). Strike any cut feature's row from section 2 and its moment from section 6 — never pitch a feature that isn't on screen.
 - [ ] Rewrite the pitch script (section 6) in your own words.
 - [ ] Two slides only: the problem (opening, using THEIR words) and business/vision (closing). The middle is the live product.
 - [ ] Attend both timed rehearsals; time them; cut overruns.

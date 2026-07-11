@@ -6,6 +6,7 @@ Read this first if you are an AI agent (or human) implementing any part of this 
 1. This file — orientation.
 2. `docs/superpowers/specs/2026-07-11-org-ai-memory-design.md` — the approved design (WHY).
 3. `docs/superpowers/plans/2026-07-11-brainsquared-mvp.md` — the implementation plan with **complete code for every file** (WHAT/HOW). Your folder's placeholder files each name their plan task (e.g. "Task B3"). Implement from the plan; do not invent alternative designs.
+4. `BUSINESS_GUIDE.md` — the product narrative the pitch is built on. Its §2 table maps every feature to the pain it solves and the demo moment that proves it. **The implementation must keep every §2 row true.** Two rules that follow: (a) any user-facing string you write must be plain language a non-technical judge understands on a projector — no jargon, no internal names (naming note: the agents are "the Council" on screen and "AI librarians" in the spoken pitch — both refer to Scribe/Curator/Auditor); (b) if a feature is cut or changed, flag it so BUSINESS_GUIDE §2 is updated the same hour — a pitch describing a feature that no longer exists is a stage failure.
 
 ## What we are building
 
