@@ -1,1 +1,4 @@
-// Task C4 (Engineer C): CapturePanel component — full code in docs/superpowers/plans/2026-07-11-brainsquared-mvp.md
+'use client';
+export default function CapturePanel(props: Record<string, unknown>) {
+  return <div style={{ padding: 40, color: '#475569' }}>CapturePanel — coming in Task C4</div>;
+}

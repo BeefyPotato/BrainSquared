@@ -1,1 +1,4 @@
-// Task C2 (Engineer C): GraphView component — full code in docs/superpowers/plans/2026-07-11-brainsquared-mvp.md
+'use client';
+export default function GraphView(props: Record<string, unknown>) {
+  return <div style={{ padding: 40, color: '#475569' }}>GraphView — coming in Task C2</div>;
+}

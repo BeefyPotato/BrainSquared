@@ -1,1 +1,4 @@
-// Task C3 (Engineer C): NodeDrawer component — full code in docs/superpowers/plans/2026-07-11-brainsquared-mvp.md
+'use client';
+export default function NodeDrawer(props: Record<string, unknown>) {
+  return <div style={{ padding: 40, color: '#475569' }}>NodeDrawer — coming in Task C3</div>;
+}

@@ -1,1 +1,4 @@
-// Task C6 (Engineer C): TaskPanel component — full code in docs/superpowers/plans/2026-07-11-brainsquared-mvp.md
+'use client';
+export default function TaskPanel(props: Record<string, unknown>) {
+  return <div style={{ padding: 40, color: '#475569' }}>TaskPanel — coming in Task C6</div>;
+}
