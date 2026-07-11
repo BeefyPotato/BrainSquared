@@ -1,1 +1,13 @@
-Task A2 (Engineer A): demo fixture — full text in docs/superpowers/plans/2026-07-11-brainsquared-mvp.md (Step A2.3)
+PARTNER MEMO — 2026-07-11 — From: An Tran, Managing Partner
+
+Subject: Mandatory senior review for AI-drafted client deliverables
+
+Effective immediately, every client-facing deliverable drafted with AI assistance
+must be reviewed by a senior consultant before it is sent to the client. No
+exceptions for deal size or turnaround pressure.
+
+Rationale: last month's Menlo Retail incident — an unreviewed AI-drafted brief
+quoted a competitor's confidential figures. The client caught it before damage
+was done. We will not rely on luck twice.
+
+This supersedes any team-level fast-track arrangements that skip senior review.

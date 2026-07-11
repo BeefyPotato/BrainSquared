@@ -1,1 +1,11 @@
-// Task A2 (Engineer A): fallback snapshot script — full code in docs/superpowers/plans/2026-07-11-brainsquared-mvp.md
+import { config } from 'dotenv';
+config({ path: '.env.local' });
+import { writeFileSync } from 'fs';
+
+async function main() {
+  const { getGraph } = await import('../src/lib/supabase');
+  const g = await getGraph();
+  writeFileSync('public/fallback-snapshot.json', JSON.stringify(g, null, 2));
+  console.log(`Snapshot: ${g.nodes.length} nodes, ${g.edges.length} edges`);
+}
+main().catch((e) => { console.error(e); process.exit(1); });
