@@ -19,23 +19,31 @@ server.registerTool(
     },
   },
   async ({ conversation_text, uploader }) => {
-    const res = await fetch(`${BASE_URL}/api/ingest`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        text: conversation_text,
-        uploader,
-        sourceKind: 'claude_conversation',
-        sourceName: `MCP capture by ${uploader}`,
-      }),
-    });
+    const fail = (text: string) => ({ content: [{ type: 'text' as const, text }], isError: true });
+    let res: Response;
+    try {
+      res = await fetch(`${BASE_URL}/api/ingest`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: conversation_text,
+          uploader,
+          sourceKind: 'claude_conversation',
+          sourceName: `MCP capture by ${uploader}`,
+        }),
+      });
+    } catch (e) {
+      return fail(`Could not reach BrainSquared at ${BASE_URL} (${e}). Start the app with \`npm run dev\`, or point BRAINSQUARED_URL at where it runs.`);
+    }
+    if (!(res.headers.get('content-type') ?? '').includes('application/json')) {
+      return fail(`BrainSquared at ${BASE_URL} answered ${res.status} without JSON — the app is up but likely misconfigured (check OPENAI_API_KEY and Supabase vars in .env.local).`);
+    }
     const json = await res.json();
+    if (!json.ok) return fail(`Could not save to org memory: ${json.error}`);
     return {
       content: [{
         type: 'text' as const,
-        text: json.ok
-          ? `Saved ${json.createdNodeIds.length} knowledge assets to org memory. The Agent Council (Scribe, Curator, Auditor) is reviewing them now — watch them appear on the graph.`
-          : `Could not save to org memory: ${json.error}`,
+        text: `Saved ${json.createdNodeIds.length} knowledge assets to org memory. The Agent Council (Scribe, Curator, Auditor) is reviewing them now — watch them appear on the graph.`,
       }],
     };
   }

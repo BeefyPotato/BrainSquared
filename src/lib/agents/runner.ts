@@ -2,10 +2,14 @@ import OpenAI from 'openai';
 import { insertNodes, insertEdges, newId } from '../supabase';
 import type { KGNode, KGEdge } from '../types';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// Created lazily: constructing without a key throws, and doing that at module
+// load makes every importing API route fail with an HTML 500 instead of the
+// route's own JSON error response.
+let openai: OpenAI | null = null;
 const MODEL = process.env.OPENAI_MODEL ?? 'gpt-4.1';
 
 export async function llmJson<T>(system: string, user: string): Promise<T> {
+  openai ??= new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   let lastErr: unknown;
   for (let attempt = 0; attempt < 2; attempt++) {
     try {

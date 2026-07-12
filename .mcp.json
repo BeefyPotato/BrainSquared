@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "brainsquared": {
+      "command": "cmd",
+      "args": ["/c", "npx", "tsx", "mcp/server.ts"],
+      "env": {
+        "BRAINSQUARED_URL": "http://localhost:3000"
+      }
+    }
+  }
+}
